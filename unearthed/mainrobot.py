@@ -6,10 +6,6 @@ selected = hub_menu(range(1,9))
 # Based on the selection, run a program.
 match selected:
     case "1":
-        import Run1_collect
-    case "2":
-        import Run2_nursery_shark
-    case "8":
-        import Run8
+        import sample_setup_run    
     case _:
         print('!')
