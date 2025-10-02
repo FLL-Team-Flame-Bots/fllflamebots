@@ -19,9 +19,11 @@ right_motor = Motor(Port.F, Direction.COUNTERCLOCKWISE)
 # Initialize variables.
 heading = 0
 
+
 async def run_motor_and_wait(motor, speed, angle, wait_ms):
     await right_motor.run_angle(speed, angle)
     await wait(wait_ms)
+
 
 async def run1_mission4():
     global start_distance, delta_distance
@@ -35,7 +37,7 @@ async def run1_mission4():
     print(f"Backup distance {drive_base.distance()}")
     # Left turn toward mission 4, move ahead
     await drive_base.turn(-95 - prime_hub.imu.heading())
-    await AccurateTurn(prime_hub, drive_base, -90)    
+    await AccurateTurn(prime_hub, drive_base, -90)
     print(f"Heading after -90 turn {prime_hub.imu.heading()}")
     drive_base.settings(straight_speed=300)
     drive_base.settings(straight_acceleration=100)
@@ -53,12 +55,13 @@ async def run1_mission4():
     if delta_distance > 120:
         await multitask(
             left_motor.run_angle(500, 650),
-            run_motor_and_wait(right_motor, 200, 150, 500)
+            run_motor_and_wait(right_motor, 200, 150, 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
     await drive_base.straight(-delta_distance)
+
 
 async def run1_mission2():
     await wait(0)
@@ -80,39 +83,42 @@ async def run1_mission2():
     await drive_base.straight(-300)
     await right_motor.run_angle(300, -200)
 
-async def lift_statue():
-    # Fast acceleration, make counter-clock wise turn, to lift statue
-    await drive_base.straight(80)
-    await right_motor.run_angle(500, 30)
-    await drive_base.turn(-75 - prime_hub.imu.heading())
-    await drive_base.straight(10)
-    await run_motor_and_wait(right_motor, 500, 50, 500)
 
-async def run1_mission13():    
+async def run1_mission13():
     # Orient toward mission #13
     await multitask(
         drive_base.turn(-53 - prime_hub.imu.heading()),
         left_motor.run_angle(1500, 500),
         right_motor.run_angle(1500, 30),
     )
+    print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
     await drive_base.straight(430)
     # Lowering left motor so that precious artifact can be dragged by statue.
     await left_motor.run_angle(2000, -1200, Stop.COAST)
     await drive_base.straight(-120, then=Stop.COAST)
     # Move toward mission #13 again trying to lift statue
     await multitask(
-        #drive_base.turn(-60 - prime_hub.imu.heading()),
+        # drive_base.turn(-60 - prime_hub.imu.heading()),
         right_motor.run_angle(1500, -200),
         left_motor.run_angle(4000, 1000, Stop.COAST),
     )
     print(f"Heading toward mission 13 {prime_hub.imu.heading()}")
+
     # Multitask with timer to avoid stuck at mission #13
+    async def lift_statue():
+        await drive_base.straight(80)
+        await right_motor.run_angle(500, 30)
+        await drive_base.turn(-75 - prime_hub.imu.heading())
+        await drive_base.straight(10)
+        await run_motor_and_wait(right_motor, 500, 50, 500)
+
     await multitask(
         lift_statue(),
         wait(5000),
         race=True,
     )
     await drive_base.straight(-200)
+
 
 async def main():
     run_watch.reset()
@@ -123,20 +129,20 @@ async def main():
     drive_base.settings(turn_acceleration=180)
     mission_watch.reset()
     await run1_mission4()
-    print(['mission4 time', mission_watch.time()])
+    print(["mission4 time", mission_watch.time()])
     mission_watch.reset()
     await run1_mission13()
-    print(['mission13 time', mission_watch.time()])
+    print(["mission13 time", mission_watch.time()])
     mission_watch.reset()
     await run1_mission2()
-    print(['mission2 time', mission_watch.time()])
+    print(["mission2 time", mission_watch.time()])
     # Leave mission 2, go back
     await drive_base.straight(40)
     await drive_base.turn(50, then=Stop.COAST)
     drive_base.settings(straight_speed=1000)
     drive_base.settings(straight_acceleration=500)
     await drive_base.straight(800)
-    print(['Run1 time', run_watch.time()])
+    print(["Run1 time", run_watch.time()])
 
 
 run_task(main())
