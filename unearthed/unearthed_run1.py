@@ -109,7 +109,7 @@ async def run1_mission13():
         await drive_base.straight(80)
         await right_motor.run_angle(500, 30)
         await drive_base.turn(-75 - prime_hub.imu.heading())
-        await drive_base.straight(10)
+        await drive_base.straight(15)
         await run_motor_and_wait(right_motor, 500, 50, 500)
 
     await multitask(
