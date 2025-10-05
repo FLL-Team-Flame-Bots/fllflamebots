@@ -31,7 +31,7 @@ async def run1_mission4():
     # Backward drive to mission 03, life both arms to appropriate angle.
     await multitask(
         left_motor.run_angle(1000, 400),
-        right_motor.run_angle(500, 30),
+        right_motor.run_angle(500, 20),
         drive_base.straight(-742),
     )
     print(f"Backup distance {drive_base.distance()}")
@@ -55,7 +55,7 @@ async def run1_mission4():
     if delta_distance > 120:
         await multitask(
             left_motor.run_angle(500, 650),
-            run_motor_and_wait(right_motor, 200, 150, 500),
+            run_motor_and_wait(right_motor, 150, 150, 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
@@ -89,39 +89,44 @@ async def run1_mission13():
     await multitask(
         drive_base.turn(-53 - prime_hub.imu.heading()),
         left_motor.run_angle(1500, 500),
-        right_motor.run_angle(1500, 30),
+        right_motor.run_angle(1500, -20),
     )
     print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
     await drive_base.straight(430)
     # Lowering left motor so that precious artifact can be dragged by statue.
-    await left_motor.run_angle(2000, -1200, Stop.COAST)
+    await left_motor.run_angle(2000, -1200)
+    drive_base.settings(straight_speed=300)
+    drive_base.settings(straight_acceleration=100)
     await drive_base.straight(-120, then=Stop.COAST)
     # Move toward mission #13 again trying to lift statue
     await multitask(
         # drive_base.turn(-60 - prime_hub.imu.heading()),
-        right_motor.run_angle(1500, -200),
-        left_motor.run_angle(4000, 1000, Stop.COAST),
+        right_motor.run_angle(1500, -right_motor.angle()),
+        left_motor.run_angle(4000, 1000),
     )
     print(f"Heading toward mission 13 {prime_hub.imu.heading()}")
-
     # Multitask with timer to avoid stuck at mission #13
     async def lift_statue():
+        print(f"Right motor angle before lifting {right_motor.angle()}")
         await drive_base.straight(80)
-        await right_motor.run_angle(500, 30)
+        await right_motor.run_angle(500, 30 - right_motor.angle())
         await drive_base.turn(-75 - prime_hub.imu.heading())
         await drive_base.straight(15)
-        await run_motor_and_wait(right_motor, 500, 50, 500)
-
+        await run_motor_and_wait(right_motor, 500, 50 - right_motor.angle(), 500)
+        
     await multitask(
         lift_statue(),
         wait(5000),
         race=True,
     )
-    await drive_base.straight(-200)
+    await drive_base.turn(-60 - prime_hub.imu.heading())
+    await drive_base.straight(-150)
 
 
 async def main():
     run_watch.reset()
+    right_motor.reset_angle(0)
+    left_motor.reset_angle(0)
     drive_base.use_gyro(True)
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=150)
