@@ -1,6 +1,6 @@
 from pybricks.parameters import Stop
 
-async def AccurateTurn(prime_hub, drive_base, angle):
+async def AccurateTurn(prime_hub, drive_base, angle, adjust_factor=1):
     print(f"AccurateTurn angle={angle}")
     repeated = 0
     delta_heading = 0
@@ -13,11 +13,11 @@ async def AccurateTurn(prime_hub, drive_base, angle):
     while not -2 <= delta_heading <= 2:
         repeated += 1
         print(f"repeated={repeated} heading={prime_hub.imu.heading()}")
-        await drive_base.turn(1 * delta_heading, then=Stop.HOLD)
+        await drive_base.turn(adjust_factor * delta_heading, then=Stop.HOLD)
         delta_heading = angle - prime_hub.imu.heading()
         if repeated > 3:
             break
-    drive_base.stop()
+    drive_base.turn(angle - prime_hub.imu.heading())
 
 async def CurveAdjustAngle(
     prime_hub, drive_base, target_angle, radius, max_distance):
