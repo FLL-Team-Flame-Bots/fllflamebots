@@ -51,6 +51,7 @@ async def run1_mission4():
         wait(3000),
         race=True,
     )
+    print(f"Heading after straight 148 turn {prime_hub.imu.heading()}")
     delta_distance = drive_base.distance() - start_distance
     print(f"Distance toward mission #4 {delta_distance}")
     # Complete mission #4 only if drive base actually moves into position
@@ -95,12 +96,12 @@ async def run1_mission13():
     # Multitask with timer to avoid stuck at mission #13
     async def lift_statue():
         print(f"Right motor angle before lifting {right_motor.angle()}")
-        await AccurateTurn(prime_hub, drive_base, -55, adjust_factor=1.2)
+        await AccurateTurn(prime_hub, drive_base, -54, adjust_factor=1.2)
         print(f"Heading toward statue {prime_hub.imu.heading()}")
         await drive_base.straight(100)
         print(f"Heading before lifting {prime_hub.imu.heading()}")
         await multitask(
-            right_motor.run_angle(500, 45 - right_motor.angle()),
+            right_motor.run_angle(500, 55 - right_motor.angle()),
             left_motor.run_angle(1000, -900),
         )
         await drive_base.turn(-80 - prime_hub.imu.heading())
