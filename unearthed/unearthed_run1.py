@@ -30,8 +30,8 @@ async def run1_mission4():
     await wait(0)
     # Backward drive to mission 03, life both arms to appropriate angle.
     await multitask(
-        left_motor.run_angle(1000, 400),
-        right_motor.run_angle(500, 30),
+        left_motor.run_angle(1000, 300),
+        right_motor.run_angle(500, 25),
         drive_base.straight(-742),
     )
     print(f"Backup distance {drive_base.distance()}")
@@ -46,82 +46,87 @@ async def run1_mission4():
     start_distance = drive_base.distance()
     # Multitask with timer to avoid stuck at mission #4
     await multitask(
-        drive_base.straight(152),
+        # drive_base.straight(152),
+        drive_base.straight(148),
         wait(3000),
         race=True,
     )
+    print(f"Heading after straight 148 turn {prime_hub.imu.heading()}")
     delta_distance = drive_base.distance() - start_distance
+    print(f"Distance toward mission #4 {delta_distance}")
     # Complete mission #4 only if drive base actually moves into position
     if delta_distance > 120:
         await multitask(
-            left_motor.run_angle(500, 650),
-            run_motor_and_wait(right_motor, 200, 150, 500),
+            left_motor.run_angle(500, 850),
+            run_motor_and_wait(right_motor, 150, 150, 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
-    await drive_base.straight(-delta_distance)
-
-
-async def run1_mission2():
-    await wait(0)
-    # Speed up to reach mission #2 in time
-    drive_base.settings(straight_speed=1000)
-    drive_base.settings(straight_acceleration=500)
-    drive_base.settings(turn_rate=90)
-    drive_base.settings(turn_acceleration=180)
-    # In parallel, move backward toward mission #2, and lift right arm toward back
-    await multitask(
-        drive_base.turn(-40 - prime_hub.imu.heading()),
-        # Lift right arm all the way toward back. Set a timer to avoid stuck.
-        multitask(
-            right_motor.run_angle(300, 350),
-            wait(2000),
-            race=True,
-        ),
-    )
-    await drive_base.straight(-300)
-    await right_motor.run_angle(300, -200)
+    await drive_base.straight(-delta_distance + 20)
 
 
 async def run1_mission13():
     # Orient toward mission #13
     await multitask(
-        drive_base.turn(-53 - prime_hub.imu.heading()),
+        drive_base.turn(-50 - prime_hub.imu.heading()),
         left_motor.run_angle(1500, 500),
-        right_motor.run_angle(1500, 30),
+        right_motor.run_angle(1500, -20),
     )
     print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
     await drive_base.straight(430)
     # Lowering left motor so that precious artifact can be dragged by statue.
-    await left_motor.run_angle(2000, -1200, Stop.COAST)
-    await drive_base.straight(-120, then=Stop.COAST)
+    await left_motor.run_angle(2000, -1200)
+    drive_base.settings(straight_speed=200)
+    drive_base.settings(straight_acceleration=100)
+    print(f"Heading before dropping artifact {prime_hub.imu.heading()}")
+    await drive_base.turn(-45 - prime_hub.imu.heading())
+    print(f"Heading after -45 {prime_hub.imu.heading()}")
+    await drive_base.straight(-150)
+    print(f"Heading after dropping artifact {prime_hub.imu.heading()}")
+    drive_base.settings(straight_speed=600)
+    drive_base.settings(straight_acceleration=300)
     # Move toward mission #13 again trying to lift statue
     await multitask(
-        # drive_base.turn(-60 - prime_hub.imu.heading()),
-        right_motor.run_angle(1500, -200),
-        left_motor.run_angle(4000, 1000, Stop.COAST),
+        right_motor.run_angle(1500, -right_motor.angle()),
+        left_motor.run_angle(4000, 1000),
     )
     print(f"Heading toward mission 13 {prime_hub.imu.heading()}")
 
     # Multitask with timer to avoid stuck at mission #13
     async def lift_statue():
-        await drive_base.straight(80)
-        await right_motor.run_angle(500, 30)
-        await drive_base.turn(-75 - prime_hub.imu.heading())
-        await drive_base.straight(10)
-        await run_motor_and_wait(right_motor, 500, 50, 500)
+        print(f"Right motor angle before lifting {right_motor.angle()}")
+        await AccurateTurn(prime_hub, drive_base, -54, adjust_factor=1.2)
+        print(f"Heading toward statue {prime_hub.imu.heading()}")
+        await drive_base.straight(100)
+        print(f"Heading before lifting {prime_hub.imu.heading()}")
+        await multitask(
+            right_motor.run_angle(500, 55 - right_motor.angle()),
+            left_motor.run_angle(1000, -900),
+        )
+        await drive_base.turn(-80 - prime_hub.imu.heading())
+        await wait(500)
 
     await multitask(
         lift_statue(),
         wait(5000),
         race=True,
     )
-    await drive_base.straight(-200)
+    drive_base.settings(straight_speed=600)
+    drive_base.settings(straight_acceleration=300)
+    await drive_base.turn(-60 - prime_hub.imu.heading())
+    # await drive_base.straight(-300)
+    await multitask(
+        drive_base.straight(-300),
+        right_motor.run_angle(300, 200 - right_motor.angle()),
+        left_motor.run_angle(5000, 1000),
+    )
 
 
 async def main():
     run_watch.reset()
+    right_motor.reset_angle(0)
+    left_motor.reset_angle(0)
     drive_base.use_gyro(True)
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=150)
@@ -133,15 +138,13 @@ async def main():
     mission_watch.reset()
     await run1_mission13()
     print(["mission13 time", mission_watch.time()])
-    mission_watch.reset()
-    await run1_mission2()
-    print(["mission2 time", mission_watch.time()])
-    # Leave mission 2, go back
-    await drive_base.straight(40)
-    await drive_base.turn(50, then=Stop.COAST)
     drive_base.settings(straight_speed=1000)
     drive_base.settings(straight_acceleration=500)
-    await drive_base.straight(800)
+    drive_base.settings(turn_rate=360)
+    drive_base.settings(turn_acceleration=180)
+    await drive_base.turn(15 - prime_hub.imu.heading())
+    print(f"Heading before exiting {prime_hub.imu.heading()}")
+    await drive_base.straight(700)
     print(["Run1 time", run_watch.time()])
 
 
