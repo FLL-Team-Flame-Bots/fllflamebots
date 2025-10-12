@@ -50,6 +50,7 @@ async def main():
         subtask(),
     )
     print(stopwatch.time())
+    drive_base.use_gyro(False)
 
 
 run_task(main())
