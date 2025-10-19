@@ -148,6 +148,8 @@ async def main():
     await drive_base.straight(700)
     print(["Run1 time", run_watch.time()])
     drive_base.use_gyro(False)
+    drive_base.stop()
+    
 
 
 run_task(main())
