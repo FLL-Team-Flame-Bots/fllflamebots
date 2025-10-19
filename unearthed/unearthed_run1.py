@@ -21,7 +21,7 @@ heading = 0
 
 
 async def run_motor_and_wait(motor, speed, angle, wait_ms):
-    await right_motor.run_angle(speed, angle)
+    await motor.run_angle(speed, angle)
     await wait(wait_ms)
 
 
@@ -107,6 +107,7 @@ async def run1_mission13():
         await drive_base.turn(-80 - prime_hub.imu.heading())
         await wait(500)
 
+
     await multitask(
         lift_statue(),
         wait(5000),
@@ -146,6 +147,9 @@ async def main():
     print(f"Heading before exiting {prime_hub.imu.heading()}")
     await drive_base.straight(700)
     print(["Run1 time", run_watch.time()])
+    drive_base.use_gyro(False)
+    drive_base.stop()
+    
 
 
 run_task(main())

@@ -31,7 +31,7 @@ def main():
         elif selected == 2:
             import unearthed_run2
         elif selected == 3:
-            hub.display.text('THREE')
+            import unearthed_run3
         elif selected == 4:
             import unearthed_run4
         elif selected == 5:
