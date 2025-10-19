@@ -133,6 +133,8 @@ async def main():
     drive_base.settings(straight_acceleration=150)
     drive_base.settings(turn_rate=90)
     drive_base.settings(turn_acceleration=180)
+    await drive_base.straight(10)
+    drive_base.reset(0, 0)
     mission_watch.reset()
     await run1_mission4()
     print(["mission4 time", mission_watch.time()])
