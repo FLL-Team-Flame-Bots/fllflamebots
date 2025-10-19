@@ -21,7 +21,7 @@ heading = 0
 
 
 async def run_motor_and_wait(motor, speed, angle, wait_ms):
-    await right_motor.run_angle(speed, angle)
+    await motor.run_angle(speed, angle)
     await wait(wait_ms)
 
 
