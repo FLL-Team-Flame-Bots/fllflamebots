@@ -24,7 +24,7 @@ def better_menu(*options):
 # Based on the selection, run a program.
 def main():
     while True:
-        selected = better_menu(1, 2, 3, 4, 5, 6, 7)
+        selected = better_menu(1, 2, 3, 4, 5, 6)
         print(f"Selected {selected}")
         if selected == 1:
             import unearthed_run1
@@ -37,7 +37,7 @@ def main():
         elif selected == 5:
             import unearthed_run5
         elif selected == 6:
-            hub.display.text('SIX')
+            import unearthed_run6
         else:
             break;
 
