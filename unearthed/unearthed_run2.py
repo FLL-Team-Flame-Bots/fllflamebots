@@ -45,10 +45,7 @@ async def main():
     )
     await drive_base.turn(60)
     drive_base.settings(straight_speed=750)
-    await multitask(
-        drive_base.straight(-700),
-        subtask(),
-    )
+    await drive_base.straight(-700)
     print(stopwatch.time())
     drive_base.use_gyro(False)
     drive_base.stop()

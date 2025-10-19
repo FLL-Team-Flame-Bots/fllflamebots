@@ -38,5 +38,6 @@ def main():
     elif selected == 6:
         import unearthed_run6
     print(f"{selected} stopped")
+    hub.speaker.beep(500, 500)
 
 main()
