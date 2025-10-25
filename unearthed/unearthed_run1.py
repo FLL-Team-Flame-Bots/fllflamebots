@@ -31,7 +31,7 @@ async def run1_mission4():
     # Backward drive to mission 03, life both arms to appropriate angle.
     await multitask(
         left_motor.run_angle(1000, 300),
-        right_motor.run_angle(500, 25),
+        right_motor.run_angle(500, -220),
         drive_base.straight(-742),
     )
     print(f"Backup distance {drive_base.distance()}")
@@ -58,7 +58,7 @@ async def run1_mission4():
     if delta_distance > 120:
         await multitask(
             left_motor.run_angle(500, 850),
-            run_motor_and_wait(right_motor, 150, 150, 500),
+            run_motor_and_wait(right_motor, 150, -70 - right_motor.angle(), 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
@@ -71,7 +71,7 @@ async def run1_mission13():
     await multitask(
         drive_base.turn(-50 - prime_hub.imu.heading()),
         left_motor.run_angle(1500, 500),
-        right_motor.run_angle(1500, -20),
+        right_motor.run_angle(1500, -90 - right_motor.angle()),
     )
     print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
     await drive_base.straight(430)
@@ -88,7 +88,7 @@ async def run1_mission13():
     drive_base.settings(straight_acceleration=300)
     # Move toward mission #13 again trying to lift statue
     await multitask(
-        right_motor.run_angle(1500, -right_motor.angle()),
+        right_motor.run_angle(1500, -250 - right_motor.angle()),
         left_motor.run_angle(4000, 1000),
     )
     print(f"Heading toward mission 13 {prime_hub.imu.heading()}")
@@ -101,10 +101,10 @@ async def run1_mission13():
         await drive_base.straight(100)
         print(f"Heading before lifting {prime_hub.imu.heading()}")
         await multitask(
-            right_motor.run_angle(500, 55 - right_motor.angle()),
+            right_motor.run_angle(500, -195 - right_motor.angle()),
             left_motor.run_angle(1000, -900),
         )
-        await drive_base.turn(-80 - prime_hub.imu.heading())
+        await drive_base.turn(-90 - prime_hub.imu.heading())
         await wait(500)
 
 
@@ -119,12 +119,14 @@ async def run1_mission13():
     # await drive_base.straight(-300)
     await multitask(
         drive_base.straight(-300),
-        right_motor.run_angle(300, 200 - right_motor.angle()),
+        right_motor.run_angle(300, -right_motor.angle()),
         left_motor.run_angle(5000, 1000),
     )
 
 
 async def main():
+    await right_motor.run_until_stalled(300,duty_limit=50)
+    right_motor.reset_angle(0)
     run_watch.reset()
     right_motor.reset_angle(0)
     left_motor.reset_angle(0)
