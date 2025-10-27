@@ -33,7 +33,7 @@ def main():
     elif selected == 3:
         import unearthed_v2_silo
     elif selected == 4:
-        import unearthed_run4
+        import unearthed_v2_statue
     elif selected == 5:
         import unearthed_v2_ship
     elif selected == 6:
