@@ -1,4 +1,5 @@
-from pybricks.parameters import Stop
+from pybricks.parameters import Color, Stop
+from pybricks.tools import multitask, wait
 
 
 async def AccurateTurn(prime_hub, drive_base, angle, adjust_factor=1):
@@ -21,28 +22,25 @@ async def AccurateTurn(prime_hub, drive_base, angle, adjust_factor=1):
     drive_base.stop()
 
 
-async def CurveAdjustAngle(prime_hub, drive_base, target_angle, radius, max_distance):
-    is_forward = max_distance > 0
-    first_distance = drive_base.distance()
-    delta_angle = target_angle - prime_hub.imu.heading()
-    print(
-        f"CurveAdjustAngle: start heading={prime_hub.imu.heading()}, "
-        + f"start distance={drive_base.distance()}, "
-        + f"is_forward={is_forward}"
-    )
-    while (abs(drive_base.distance() - first_distance) < abs(max_distance)) and (
-        abs(delta_angle) > 2
-    ):
-        radius = abs(radius) if (is_forward == (delta_angle > 0)) else -abs(radius)
-        move_angle = abs(delta_angle) if is_forward else -abs(delta_angle)
-        print(f"arc(radius={radius}, angle={move_angle})")
-        await drive_base.arc(radius, angle=move_angle, then=Stop.COAST_SMART)
-        delta_angle = target_angle - prime_hub.imu.heading()
-        print(f"delta_angle={delta_angle} heading={prime_hub.imu.heading()}")
-    print(
-        f"final heading={prime_hub.imu.heading()}, "
-        + f"distance={drive_base.distance()}"
-    )
-
-
-# The main program starts here.
+async def TurnByWheel(prime_hub, drive_base, left_wheel, right_wheel, target_angle, wheel_speed=30):
+    drive_base.stop()
+    print(f"AccurateTurnWithWheel target_angle={target_angle}")
+    repeated = 0
+    delta_heading = 0
+    repeated = 0
+    delta_heading = target_angle - prime_hub.imu.heading()
+    print(f"init heading={prime_hub.imu.heading()}")
+    print(f"init delta angle={delta_heading}")
+    while not -1 <= delta_heading <= 1:
+        if delta_heading > 0: # clockwise turn
+            left_wheel.run(wheel_speed)
+            right_wheel.run(-wheel_speed)
+        else: # counter-clockwise turn
+            left_wheel.run(-wheel_speed)
+            right_wheel.run(wheel_speed)
+        await wait(10)        
+        delta_heading = target_angle - prime_hub.imu.heading()        
+    left_wheel.stop()
+    right_wheel.stop()
+    await drive_base.turn(target_angle - prime_hub.imu.heading())    
+    print(f"heading after turn {prime_hub.imu.heading()}")
