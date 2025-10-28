@@ -1,4 +1,4 @@
-from pybricks.tools import hub_menu
+from pybricks.tools import hub_menu, StopWatch
 
 from pybricks.hubs import PrimeHub
 from pybricks.tools import hub_menu, run_task, wait
@@ -40,7 +40,7 @@ def main():
         import unearthed_v2_mapreveal
     elif selected == 7:
         import unearthed_v2_mineshaft
-    print(f"{selected} stopped, time {run_watch}(ms)")
+    print(f"{selected} stopped, time {run_watch.time()}(ms)")
     hub.speaker.beep(500, 500)
 
 main()
