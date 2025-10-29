@@ -23,7 +23,7 @@ def better_menu(*options):
 
 # Based on the selection, run a program.
 def main():
-    selected = better_menu(1, 2, 3, 4, 5, 6, 7)
+    selected = better_menu(1, 2, 3, 4, 5, 6, 7, 8)
     print(f"Selected {selected}")
     run_watch = StopWatch()
     if selected == 1:
@@ -40,6 +40,8 @@ def main():
         import unearthed_v2_mapreveal
     elif selected == 7:
         import unearthed_v2_mineshaft
+    elif selected == 8:
+        import unearthed_v2_final
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
     hub.speaker.beep(500, 500)
 
