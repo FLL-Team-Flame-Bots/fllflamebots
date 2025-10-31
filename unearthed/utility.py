@@ -22,7 +22,7 @@ async def AccurateTurn(prime_hub, drive_base, angle, adjust_factor=1):
     drive_base.stop()
 
 
-async def TurnByWheel(prime_hub, drive_base, left_wheel, right_wheel, target_angle, wheel_speed=30):
+async def TurnByWheel(prime_hub, drive_base, left_wheel, right_wheel, target_angle, wheel_speed=30, angle_error=1):
     drive_base.stop()
     print(f"AccurateTurnWithWheel target_angle={target_angle}")
     repeated = 0
@@ -31,7 +31,7 @@ async def TurnByWheel(prime_hub, drive_base, left_wheel, right_wheel, target_ang
     delta_heading = target_angle - prime_hub.imu.heading()
     print(f"init heading={prime_hub.imu.heading()}")
     print(f"init delta angle={delta_heading}")
-    while not -1 <= delta_heading <= 1:
+    while not -angle_error <= delta_heading <= angle_error:
         if delta_heading > 0: # clockwise turn
             left_wheel.run(wheel_speed)
             right_wheel.run(-wheel_speed)

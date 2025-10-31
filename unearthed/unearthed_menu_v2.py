@@ -43,6 +43,5 @@ def main():
     elif selected == 8:
         import unearthed_v2_final
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
-    hub.speaker.beep(500, 500)
 
 main()
