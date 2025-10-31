@@ -27,7 +27,7 @@ async def run_motor_and_wait(motor, speed, target_angle, wait_ms):
 
 async def mission_mineshaft():
     await multitask(
-        drive_base.straight(-742),
+        drive_base.straight(-734),
         left_motor.run_target(500, 650)
     )
     print(f"Left motor angle {left_motor.angle()}")
@@ -35,16 +35,18 @@ async def mission_mineshaft():
     print(f"Backup distance {drive_base.distance()}")
     
     await drive_base.turn(-90 - prime_hub.imu.heading())
-    await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -90)
-    await right_motor.run_target(500, -190)
+    await multitask (
+        TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -90),
+        right_motor.run_target(500, -190)
+    )
     # Backward drive to mission 03, life both arms to appropriate angle.
     print(f"Heading after -90 turn {prime_hub.imu.heading()}")
-    drive_base.settings(straight_speed=300)
+    drive_base.settings(straight_speed=200)
     drive_base.settings(straight_acceleration=100)
     start_distance = drive_base.distance()
     # Multitask with timer to avoid stuck at mission #4
     await multitask(
-        drive_base.straight(160),
+        drive_base.straight(150),
         wait(3000),
         race=True,
     )
@@ -54,20 +56,39 @@ async def mission_mineshaft():
     # Complete mission #4 only if drive base actually moves into position
     if delta_distance > 120:
         await multitask(
-            left_motor.run_target(500, 1050),
+            left_motor.run_target(500, 1010),
             run_motor_and_wait(right_motor, 150, -40, 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
-    await drive_base.straight(-delta_distance)
+    #drive_base.use_gyro(False)
+    await drive_base.straight(-delta_distance-20)
+    #drive_base.use_gyro(True)
+
+
+# async def mission_forum():
+#     # Orient toward mission #13
+#     await multitask(
+#         drive_base.turn(-40 - prime_hub.imu.heading()),
+#         #left_motor.run_target(500, 500),
+#         right_motor.run_target(500, 0),
+#     )
+#     left_motor.run_target(500, 0),
+#     drive_base.settings(straight_speed=1000)
+#     drive_base.settings(straight_acceleration=1000)
+#     print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
+#     await drive_base.straight(250, Stop.BRAKE)
+#     drive_base.settings(turn_rate=360)
+#     drive_base.settings(turn_acceleration=750)
+#     await drive_base.turn(45)
 
 
 async def main():
     run_watch.reset()
     drive_base.use_gyro(True)
     drive_base.settings(straight_speed=600)
-    drive_base.settings(straight_acceleration=150)
+    drive_base.settings(straight_acceleration=300)
     drive_base.settings(turn_rate=90)
     drive_base.settings(turn_acceleration=180)
     async def reset_right_motor():
@@ -76,6 +97,7 @@ async def main():
 
     async def reset_left_motor():
         left_motor.reset_angle(0)
+        #left_motor.run_target(500, 650)
 
     await multitask(
         drive_base.straight(10),
@@ -87,13 +109,16 @@ async def main():
     await mission_mineshaft()
     drive_base.settings(straight_speed=800)
     drive_base.settings(straight_acceleration=1000)
+    drive_base.settings(turn_rate=360)
+    drive_base.settings(turn_acceleration=360)
     await drive_base.turn(5 - prime_hub.imu.heading())
     await multitask(
         drive_base.straight(750),
         right_motor.run_target(500, 0)
     )
+    # await mission_forum()
     print(f"mineshaft run time {run_watch.time()}")
-    print(f"battery {prime_hub.battery.voltage()}")
+    # print(f"battery {prime_hub.battery.voltage()}")
     drive_base.stop()
     
 
