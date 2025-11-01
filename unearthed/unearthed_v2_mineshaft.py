@@ -67,21 +67,24 @@ async def mission_mineshaft():
     #drive_base.use_gyro(True)
 
 
-# async def mission_forum():
-#     # Orient toward mission #13
-#     await multitask(
-#         drive_base.turn(-40 - prime_hub.imu.heading()),
-#         #left_motor.run_target(500, 500),
-#         right_motor.run_target(500, 0),
-#     )
-#     left_motor.run_target(500, 0),
-#     drive_base.settings(straight_speed=1000)
-#     drive_base.settings(straight_acceleration=1000)
-#     print(f"Heading after turning to #13 {prime_hub.imu.heading()}")
-#     await drive_base.straight(250, Stop.BRAKE)
-#     drive_base.settings(turn_rate=360)
-#     drive_base.settings(turn_acceleration=750)
-#     await drive_base.turn(45)
+async def mission_forum():
+    # Return to base, facing 45 degrees
+    drive_base.settings(straight_speed=800)
+    drive_base.settings(straight_acceleration=1000)
+    drive_base.settings(turn_rate=360)
+    drive_base.settings(turn_acceleration=360)
+    await drive_base.turn(-prime_hub.imu.heading())
+    await multitask(
+        drive_base.straight(700),
+        right_motor.run_target(500, 0),
+        left_motor.run_target(2000, 1500)
+    )
+    await drive_base.turn(45 - prime_hub.imu.heading())
+    await drive_base.straight(50)
+    # Wait for 2s, place pieces behind robot base.
+    await wait(2000)
+    await drive_base.straight(-380)
+    await drive_base.straight(100)
 
 
 async def main():
@@ -107,20 +110,9 @@ async def main():
     
     drive_base.reset(0, 0)
     await mission_mineshaft()
-    drive_base.settings(straight_speed=800)
-    drive_base.settings(straight_acceleration=1000)
-    drive_base.settings(turn_rate=360)
-    drive_base.settings(turn_acceleration=360)
-    await drive_base.turn(5 - prime_hub.imu.heading())
-    await multitask(
-        drive_base.straight(750),
-        right_motor.run_target(500, 0)
-    )
-    # await mission_forum()
+    await mission_forum()
     print(f"mineshaft run time {run_watch.time()}")
-    # print(f"battery {prime_hub.battery.voltage()}")
+    print(f"battery {prime_hub.battery.voltage()}")
     drive_base.stop()
-    
-
 
 run_task(main())
