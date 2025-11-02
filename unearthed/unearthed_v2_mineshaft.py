@@ -80,10 +80,10 @@ async def mission_forum():
         left_motor.run_target(2000, 1500)
     )
     await drive_base.turn(45 - prime_hub.imu.heading())
-    await drive_base.straight(50)
+    await drive_base.straight(150)
     # Wait for 2s, place pieces behind robot base.
     await wait(2000)
-    await drive_base.straight(-380)
+    await drive_base.straight(-480)
     await drive_base.straight(100)
 
 
