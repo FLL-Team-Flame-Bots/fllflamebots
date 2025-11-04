@@ -63,7 +63,7 @@ async def mission_mineshaft():
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
     #drive_base.use_gyro(False)
-    await drive_base.straight(-delta_distance-20)
+    await drive_base.straight(-170)
     #drive_base.use_gyro(True)
 
 
@@ -74,16 +74,25 @@ async def mission_forum():
     drive_base.settings(turn_rate=360)
     drive_base.settings(turn_acceleration=360)
     await drive_base.turn(-prime_hub.imu.heading())
+    async def return_to_base():
+        await drive_base.straight(650)
+        await drive_base.turn(45 - prime_hub.imu.heading())
+        #await drive_base.arc(160, angle=50)
+        await drive_base.straight(100)
+        #await drive_base.turn(45 - prime_hub.imu.heading(), then=)
+    
     await multitask(
-        drive_base.straight(700),
+        return_to_base(),
         right_motor.run_target(500, 0),
         left_motor.run_target(2000, 1500)
     )
-    await drive_base.turn(45 - prime_hub.imu.heading())
-    await drive_base.straight(150)
+    #await drive_base.turn(45 - prime_hub.imu.heading())
+    #await drive_base.straight(150)
     # Wait for 2s, place pieces behind robot base.
     await wait(2000)
-    await drive_base.straight(-480)
+    drive_base.settings(straight_speed=600)
+    drive_base.settings(straight_acceleration=600)
+    await drive_base.straight(-430)
     await drive_base.straight(100)
 
 

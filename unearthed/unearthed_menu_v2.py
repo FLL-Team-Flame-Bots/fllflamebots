@@ -29,9 +29,9 @@ def main():
     if selected == 1:
         import unearthed_v2_forge
     elif selected == 2:
-        import unearthed_v2_scale
-    elif selected == 3:
         import unearthed_v2_silo
+    elif selected == 3:
+        import unearthed_v2_scale
     elif selected == 4:
         import unearthed_v2_statue
     elif selected == 5:
