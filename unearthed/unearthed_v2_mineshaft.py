@@ -46,7 +46,7 @@ async def mission_mineshaft():
     await drive_base.turn(-90 - prime_hub.imu.heading())
     await multitask (
         TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -90),
-        right_motor.run_target(500, -190)
+        right_motor.run_target(500, -240)
     )
     # Backward drive to mission 03, life both arms to appropriate angle.
     print(f"Heading after -90 turn {prime_hub.imu.heading()}")
@@ -106,7 +106,7 @@ async def mission_forum():
     await wait(2000)
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=600)
-    await drive_base.straight(-480)
+    await drive_base.straight(-430)
     await drive_base.straight(100)
 
 
@@ -118,7 +118,7 @@ async def main():
     drive_base.settings(turn_rate=90)
     drive_base.settings(turn_acceleration=180)
     async def reset_right_motor():
-        right_motor.run_until_stalled(500, duty_limit=50)
+        await right_motor.run_until_stalled(500, duty_limit=50)
         right_motor.reset_angle(0)
 
     async def reset_left_motor():

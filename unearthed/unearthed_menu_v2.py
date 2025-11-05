@@ -43,5 +43,6 @@ def main():
     elif selected == 8:
         import unearthed_v2_final
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
+    print(f"Battery {hub.battery.voltage()}")
 
 main()
