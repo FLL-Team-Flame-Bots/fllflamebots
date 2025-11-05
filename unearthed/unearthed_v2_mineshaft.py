@@ -24,11 +24,20 @@ async def run_motor_and_wait(motor, speed, target_angle, wait_ms):
     await motor.run_target(speed, target_angle)
     await wait(wait_ms)
 
+async def run_motor_multi_steps(motor, speed, target_angles):
+    for target_angle in target_angles:
+        await motor.run_target(speed, target_angle)
+        await wait(10)
+        print(f"Left motor angle {target_angle} {left_motor.angle()}")
+
 
 async def mission_mineshaft():
     await multitask(
         drive_base.straight(-734),
-        left_motor.run_target(500, 650)
+        # Worm gear can't be reset. The gear's starting position might vary a 
+        # bit. Run the motor further, then back, to correct tiny gaps between 
+        # gear teeth.
+        run_motor_multi_steps(left_motor, 1000, [1200, 650]),
     )
     print(f"Left motor angle {left_motor.angle()}")
     print(f"Right motor angle {right_motor.angle()}")
@@ -44,9 +53,9 @@ async def mission_mineshaft():
     drive_base.settings(straight_speed=200)
     drive_base.settings(straight_acceleration=100)
     start_distance = drive_base.distance()
-    # Multitask with timer to avoid stuck at mission #4
+    # Multitask with timer to avoid stuck at mission #4    
     await multitask(
-        drive_base.straight(150),
+        drive_base.straight(140),
         wait(3000),
         race=True,
     )
@@ -56,16 +65,23 @@ async def mission_mineshaft():
     # Complete mission #4 only if drive base actually moves into position
     if delta_distance > 120:
         await multitask(
-            left_motor.run_target(500, 1010),
+            # Life the left arm to pick up artifact
+            left_motor.run_target(1000, 1070),
             run_motor_and_wait(right_motor, 150, -40, 500),
         )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
-    #drive_base.use_gyro(False)
-    await drive_base.straight(-170)
-    #drive_base.use_gyro(True)
+    async def backoff_when_stuck():
+        await wait(2000)
+        await right_motor.run_target(500, 650)
+        await drive_base.straight(-170)
 
+    await multitask(
+        drive_base.straight(-190),
+        backoff_when_stuck(),
+        race=True,
+    )
 
 async def mission_forum():
     # Return to base, facing 45 degrees
@@ -75,24 +91,22 @@ async def mission_forum():
     drive_base.settings(turn_acceleration=360)
     await drive_base.turn(-prime_hub.imu.heading())
     async def return_to_base():
-        await drive_base.straight(650)
+        await drive_base.straight(600)
         await drive_base.turn(45 - prime_hub.imu.heading())
-        #await drive_base.arc(160, angle=50)
-        await drive_base.straight(100)
-        #await drive_base.turn(45 - prime_hub.imu.heading(), then=)
+        await drive_base.straight(150)
     
+    # Run back to home base, facing 45 degree, wait for items to be put
+    # behind.
     await multitask(
         return_to_base(),
         right_motor.run_target(500, 0),
         left_motor.run_target(2000, 1500)
-    )
-    #await drive_base.turn(45 - prime_hub.imu.heading())
-    #await drive_base.straight(150)
+    )    
     # Wait for 2s, place pieces behind robot base.
     await wait(2000)
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=600)
-    await drive_base.straight(-430)
+    await drive_base.straight(-480)
     await drive_base.straight(100)
 
 
