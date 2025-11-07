@@ -21,7 +21,8 @@ heading = 0
 
 
 async def run_motor_and_wait(motor, speed, target_angle, wait_ms):
-    await motor.run_target(speed, target_angle)
+    await motor.run_target(speed, target_angle, Stop.HOLD)
+    print(f"run_motor_and_wait angle {motor.angle()}")
     await wait(wait_ms)
 
 async def run_motor_multi_steps(motor, speed, target_angles):
@@ -55,7 +56,7 @@ async def mission_mineshaft():
     start_distance = drive_base.distance()
     # Multitask with timer to avoid stuck at mission #4    
     await multitask(
-        drive_base.straight(140),
+        drive_base.straight(150),
         wait(3000),
         race=True,
     )
@@ -67,8 +68,9 @@ async def mission_mineshaft():
         await multitask(
             # Life the left arm to pick up artifact
             left_motor.run_target(1000, 1070),
-            run_motor_and_wait(right_motor, 150, -40, 500),
+            run_motor_and_wait(right_motor, 150, -115, 500),
         )
+        await right_motor.run_target(150, -100)      
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     # Backoff the same distance as it moved forward to mission #4
@@ -107,7 +109,7 @@ async def mission_forum():
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=600)
     await drive_base.straight(-430)
-    await drive_base.straight(100)
+    await drive_base.straight(440)
 
 
 async def main():
