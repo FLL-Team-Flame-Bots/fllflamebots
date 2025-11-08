@@ -33,13 +33,7 @@ async def run_motor_multi_steps(motor, speed, target_angles):
 
 
 async def mission_mineshaft():
-    await multitask(
-        drive_base.straight(-734),
-        # Worm gear can't be reset. The gear's starting position might vary a 
-        # bit. Run the motor further, then back, to correct tiny gaps between 
-        # gear teeth.
-        run_motor_multi_steps(left_motor, 1000, [1200, 650]),
-    )
+    await drive_base.straight(-734)
     print(f"Left motor angle {left_motor.angle()}")
     print(f"Right motor angle {right_motor.angle()}")
     print(f"Backup distance {drive_base.distance()}")
@@ -67,7 +61,7 @@ async def mission_mineshaft():
     if delta_distance > 120:
         await multitask(
             # Life the left arm to pick up artifact
-            left_motor.run_target(1000, 1070),
+            left_motor.run_angle(1000, 500),
             run_motor_and_wait(right_motor, 150, -115, 500),
         )
         await right_motor.run_target(150, -100)      
@@ -76,7 +70,7 @@ async def mission_mineshaft():
     # Backoff the same distance as it moved forward to mission #4
     async def backoff_when_stuck():
         await wait(2000)
-        await right_motor.run_target(500, 650)
+        await right_motor.run_target(500, 300)
         await drive_base.straight(-170)
 
     await multitask(
@@ -102,7 +96,7 @@ async def mission_forum():
     await multitask(
         return_to_base(),
         right_motor.run_target(500, 0),
-        left_motor.run_target(2000, 1500)
+        left_motor.run_target(2000, 1000)
     )    
     # Wait for 2s, place pieces behind robot base.
     await wait(2000)
@@ -125,7 +119,6 @@ async def main():
 
     async def reset_left_motor():
         left_motor.reset_angle(0)
-        #left_motor.run_target(500, 650)
 
     await multitask(
         drive_base.straight(10),
