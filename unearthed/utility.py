@@ -6,32 +6,22 @@ from pybricks.tools import multitask, wait
 
 heading_pid_settings = ()
 
-
-async def AccurateTurn(prime_hub, drive_base, angle, adjust_factor=1):
-    print(f"AccurateTurn angle={angle}")
-    repeated = 0
-    delta_heading = 0
-    repeated = 0
-    delta_heading = angle - prime_hub.imu.heading()
-    print(f"init heading={prime_hub.imu.heading()}")
-    print(f"init delta angle={delta_heading}")
-    drive_base.turn(1 * delta_heading, then=Stop.HOLD)
-    delta_heading = angle - prime_hub.imu.heading()
-    while not -2 <= delta_heading <= 2:
-        repeated += 1
-        print(f"repeated={repeated} heading={prime_hub.imu.heading()}")
-        await drive_base.turn(adjust_factor * delta_heading, then=Stop.HOLD)
-        delta_heading = angle - prime_hub.imu.heading()
-        if repeated > 3:
-            break
-    drive_base.stop()
-
-
 async def StraightAtSpeed(drive_base : DriveBase,
                           distance : int,
                           speed = -1,
                           acceleration = -1,
                           then=Stop.HOLD):
+    """
+    Moves the robot straight for a given distance at a specified speed and acceleration.
+    Afterwards, set speed and acceleration back to their original values.
+
+    Args:
+        drive_base (DriveBase): The drive base object.
+        distance (int): The distance to move in millimeters.
+        speed (int, optional): The straight speed. Defaults to -1 (uses current setting).
+        acceleration (int, optional): The straight acceleration. Defaults to -1 (uses current setting).
+        then (Stop, optional): The stop behavior after moving. Defaults to Stop.HOLD.
+    """
     current_settings = drive_base.settings()
     if speed != -1: drive_base.settings(straight=speed)
     if acceleration != -1: drive_base.settings(straight_acceleration=acceleration)
@@ -40,6 +30,16 @@ async def StraightAtSpeed(drive_base : DriveBase,
 
 
 async def DisablePID(drive_base : DriveBase):
+    """Disables the PID control for the robot's heading.
+
+    This function saves the current heading PID settings to a global
+    variable, and then sets the integral and derivative gains to 0,
+    effectively disabling the PID control. The proportional gain is
+    reduced to 1/10th of its original value.
+
+    Args:
+        drive_base: The DriveBase object for the robot.
+    """
     global heading_pid_settings
     heading_pid_settings = drive_base.heading_control().pid()
     print(f"previous heading_pid_settings={heading_pid_settings}")
@@ -48,21 +48,32 @@ async def DisablePID(drive_base : DriveBase):
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
 async def EnablePID(drive_base : DriveBase):
+    """Restores the heading PID control to its original settings.
+
+    This function restores the PID gains (proportional, integral, derivative)
+    that were saved by a prior call to DisablePID(). It uses the values
+    stored in the global `heading_pid_settings` variable.
+
+    This should be called after a maneuver that required PID to be disabled.
+
+    Args:
+        drive_base (DriveBase): The drive base object.
+    """
+    global heading_pid_settings    
+    if not heading_pid_settings:
+        print("heading_pid_settings is empty, cannot enable PID.")
+        return
+    
     print(f"previous heading_pid_settings={drive_base.heading_control().pid()}")
-    drive_base.heading_control.pid(
-        heading_pid_settings[0], 
-        heading_pid_settings[1], 
-        heading_pid_settings[2], 
-        heading_pid_settings[3], 
-        heading_pid_settings[4])
+    drive_base.heading_control.pid(*heading_pid_settings)
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
 
-async def TurnByWheelAtSpeed(prime_hub : PrimeHub,
-                             drive_base : DriveBase,
-                             left_wheel : Motor,
-                             right_wheel : Motor,
-                             target_angle, wheel_speed, angle_error):
+async def _TurnByWheelAtSpeed(prime_hub : PrimeHub,
+                              drive_base : DriveBase,
+                              left_wheel : Motor,
+                              right_wheel : Motor,
+                              target_angle, wheel_speed, angle_error):
     delta_heading = target_angle - prime_hub.imu.heading()
     print(f"init heading={prime_hub.imu.heading()}")
     print(f"init drive_base angle={drive_base.angle()}")
@@ -81,11 +92,24 @@ async def TurnByWheel(prime_hub : PrimeHub,
                       left_wheel : Motor, 
                       right_wheel : Motor, 
                       target_angle : int):
+    """Turns the robot to a specific angle.
+
+    This function turns the robot to a given target angle by first turning
+    at a high speed to get close to the target, and then slowing down to
+    fine-tune the heading.
+
+    Args:
+        prime_hub: The PrimeHub object.
+        drive_base: The DriveBase object for the robot.
+        left_wheel: The left motor of the robot.
+        right_wheel: The right motor of the robot.
+        target_angle: The target angle to turn to.
+    """
     print(f"TurnByWheel target_angle={target_angle}")
     # Turn fast until close to target angle
-    await TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
+    await _TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
     # Turn slow to fine tune the heading
-    await TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
+    await _TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
     left_wheel.stop()
     right_wheel.stop()
     print(f"heading after TurnByWheel {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
