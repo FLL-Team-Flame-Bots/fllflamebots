@@ -69,28 +69,25 @@ async def TurnByWheelAtSpeed(prime_hub : PrimeHub,
     print(f"init delta angle={delta_heading}")
     while not -angle_error <= delta_heading <= angle_error:
         # negative delta_heading means counter-clockwise turn
-        if delta_heading < 0: wheel_speed = -wheel_speed
-        left_wheel.run(wheel_speed)
-        right_wheel.run(-wheel_speed)
+        speed = wheel_speed if delta_heading > 0 else -wheel_speed
+        left_wheel.run(speed)
+        right_wheel.run(-speed)
         await wait(10)        
         delta_heading = target_angle - prime_hub.imu.heading()
-    print(f"heading after turn error {angle_error} {prime_hub.imu.heading()}")
+    print(f"heading after turn {angle_error} {prime_hub.imu.heading()}")
 
 async def TurnByWheel(prime_hub : PrimeHub,
                       drive_base : DriveBase,
                       left_wheel : Motor, 
                       right_wheel : Motor, 
                       target_angle : int):
-    drive_base.stop()
     print(f"TurnByWheel target_angle={target_angle}")
     # Turn fast until close to target angle
-    await TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 100, 10)
+    await TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
     # Turn slow to fine tune the heading
     await TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
-    left_wheel.brake()
-    right_wheel.brake()
-    #await drive_base.turn(target_angle - prime_hub.imu.heading())
-    drive_base.reset(0, prime_hub.imu.heading())
+    left_wheel.stop()
+    right_wheel.stop()
     print(f"heading after TurnByWheel {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
 
 
