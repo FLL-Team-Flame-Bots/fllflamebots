@@ -23,10 +23,10 @@ async def StraightAtSpeed(drive_base : DriveBase,
         then (Stop, optional): The stop behavior after moving. Defaults to Stop.HOLD.
     """
     current_settings = drive_base.settings()
-    if speed != -1: drive_base.settings(straight=speed)
+    if speed != -1: drive_base.settings(straight_speed=speed)
     if acceleration != -1: drive_base.settings(straight_acceleration=acceleration)
     await drive_base.straight(distance, then=then)
-    drive_base.settings(current_settings)
+    drive_base.settings(*current_settings)
 
 
 async def DisablePID(drive_base : DriveBase):
