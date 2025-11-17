@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run on my robot",
+            "type": "shell",
+            "windows": {
+              "command": ".\\my_script.bat"
+            },
+            "osx": {
+              "command": "${workspaceFolder}/.venv/bin/pybricksdev"
+            },            
+            "args": [
+                "run",
+                "ble",
+                "--name",
+                "${input:robotName}",
+                "${file}"
+            ],            
+            // "problemMatcher": {
+            //     "owner": "python",                
+            //     "fileLocation": [
+            //         "autoDetect"
+            //     ],
+            //     "pattern": {
+            //         "regexp": "^(.*)File(.*)(C:(.*)\\.py)(.*)(line(\\s*))([0-9]+),",
+            //         "file": 3,
+            //         "line": 8
+            //     }
+            // },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false,
+                "revealProblems": "onProblem"
+            }
+        }        
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "robotName",
+            "description": "Which Robot?",
+            "options": [
+                "Austin Pyhub",
+                "Austin Pyhub2"
+            ]
+        }
+    ]
+}
