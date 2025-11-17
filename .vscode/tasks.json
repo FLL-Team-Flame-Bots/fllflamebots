@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run on my robot",
+            "label": "Run Pybricks on Robot",
             "type": "shell",
             "windows": {
               "command": ".\\my_script.bat"
