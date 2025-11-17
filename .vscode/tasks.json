@@ -5,7 +5,7 @@
             "label": "Run Pybricks on Robot",
             "type": "shell",
             "windows": {
-              "command": ".\\my_script.bat"
+              "command": "${workspaceFolder}/.venv/Scripts/pybricksdev.exe"
             },
             "osx": {
               "command": "${workspaceFolder}/.venv/bin/pybricksdev"
@@ -37,7 +37,16 @@
                 "clear": false,
                 "revealProblems": "onProblem"
             }
-        }        
+        },
+        {
+            "label": "git pull on startup",
+            "type": "shell",
+            "command": "git pull",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "problemMatcher": []
+        }
     ],
     "inputs": [
         {
