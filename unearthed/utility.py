@@ -4,7 +4,7 @@ from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, wait
 
-heading_pid_settings = ()
+heading_pid_settings = (7558, 0, 1889, 6, 11)
 
 async def StraightAtSpeed(drive_base : DriveBase,
                           distance : int,

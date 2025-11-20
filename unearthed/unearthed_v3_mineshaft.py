@@ -4,7 +4,7 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, run_task, wait
 
-from utility import TurnByWheel, StraightAtSpeed
+from utility import DisablePID, EnablePID, TurnByWheel, StraightAtSpeed
 
 # Set up all devices.
 prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
@@ -12,18 +12,18 @@ watch = StopWatch()
 rightwheel = Motor(Port.C, Direction.CLOCKWISE)
 leftwheel = Motor(Port.D, Direction.COUNTERCLOCKWISE)
 drive_base = DriveBase(leftwheel, rightwheel, 62.4, 114)
-left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
+left_motor = Motor(Port.B, Direction.CLOCKWISE)
 right_motor = Motor(Port.F, Direction.COUNTERCLOCKWISE)
 
-async def subtask():
-    await left_motor.run_until_stalled(-500, Stop.HOLD, 50)
+async def reset_left_motor():
+    await left_motor.run_until_stalled(500, Stop.HOLD, 50)
     left_motor.reset_angle(0)
 
-async def subtask2():
+async def reset_right_motor():
     await right_motor.run_until_stalled(500, Stop.HOLD, 50)
     right_motor.reset_angle(0)
 
-async def subtask3():
+async def reset_base():
     await drive_base.straight(-10)
     drive_base.reset(0, 0)
     drive_base.use_gyro(True)
@@ -33,53 +33,60 @@ async def main():
     watch.reset()
     print('Battery', prime_hub.battery.voltage(), sep=", ")
     await multitask(
-        subtask(),
-        subtask2(),
-        subtask3(),
+        reset_left_motor(),
+        reset_right_motor(),
+        reset_base(),        
     )
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     drive_base.settings(turn_rate=100)
-    await drive_base.straight(735)
-    await drive_base.turn(90)
+    await drive_base.straight(735)    
     await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
     await drive_base.straight(120)
-    #drop flag
-    await right_motor.run_angle(150, -200)
-    await drive_base.straight(175)
-    await drive_base.turn(-90)
+    # drop flag
+    await right_motor.run_angle(300, -200)
+    await drive_base.straight(180)
+    
+    # Face mission 4, back up a bit, drop right arm all the way down.
     await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
-    
-    await drive_base.straight(-135)
+    await multitask(
+        drive_base.straight(-135),
+        right_motor.run_until_stalled(-300, Stop.HOLD, 50)
+    )
+    #await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
+    print(f"heading after backoff {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
+    # Move toward mission 4, raise right arm to lift mineshaft, then 
+    # move and continue lifting mineshaft.
+    await drive_base.straight(50)
     await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
-    await right_motor.run_until_stalled(-300, Stop.HOLD, 50)
-    
-    
-    await drive_base.straight(40)
+    print(f"heading toward mission 4 {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
     await right_motor.run_angle(300, 100)
     await multitask(
-        StraightAtSpeed(drive_base, 130, speed=200, acceleration=200),
+        StraightAtSpeed(drive_base, 120, speed=200, acceleration=200),
         right_motor.run_angle(140, 80),
     )
-    await wait(100)
+    await wait(100)    
 
+    # Lower left arm to pick up artifact.
     await multitask(
         wait(2000),
-        left_motor.run_angle(150, 300),
+        left_motor.run_angle(500, -250),
         race =True, 
     )
-    await left_motor.run_angle(150, -280)
-    #back away
+    await left_motor.run_angle(150, 250)
+    # Back off, turn -180 toward forum
     await multitask(
         drive_base.straight(-90),
         right_motor.run_until_stalled(500, Stop.HOLD, 50)
     )
-    await drive_base.turn(-180)
-    await left_motor.run_until_stalled(500, Stop.HOLD, 50)
-    await left_motor.run_angle(500, -300)
-    await drive_base.straight(-50)
-    await drive_base.turn(-135)
-    await drive_base.straight(700)
+    await drive_base.turn(-180)    
+    await left_motor.run_target(-1000, -150)
+    await left_motor.run_until_stalled(1000, Stop.HOLD, 50)
+    #await left_motor.run_angle(1000, 100)
+    await drive_base.straight(-70)
+    await drive_base.turn(prime_hub.imu.heading() + 70)
+    #await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 60)    
+    #await drive_base.straight(700)
 
 
 run_task(main())
