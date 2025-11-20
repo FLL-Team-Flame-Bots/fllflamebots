@@ -6,11 +6,10 @@ from pybricks.tools import multitask, wait
 
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
-async def straight_at_speed(drive_base : DriveBase,
-                            distance : int,
-                            speed = -1,
-                            acceleration = -1,
-                            then=Stop.HOLD):
+
+async def straight_at_speed(
+    drive_base: DriveBase, distance: int, speed=-1, acceleration=-1, then=Stop.HOLD
+):
     """
     Moves the robot straight for a given distance at a specified speed and acceleration.
     Afterwards, set speed and acceleration back to their original values.
@@ -23,13 +22,15 @@ async def straight_at_speed(drive_base : DriveBase,
         then (Stop, optional): The stop behavior after moving. Defaults to Stop.HOLD.
     """
     current_settings = drive_base.settings()
-    if speed != -1: drive_base.settings(straight_speed=speed)
-    if acceleration != -1: drive_base.settings(straight_acceleration=acceleration)
+    if speed != -1:
+        drive_base.settings(straight_speed=speed)
+    if acceleration != -1:
+        drive_base.settings(straight_acceleration=acceleration)
     await drive_base.straight(distance, then=then)
     drive_base.settings(*current_settings)
 
 
-async def DisablePID(drive_base : DriveBase):
+async def disable_pid(drive_base: DriveBase):
     """Disables the PID control for the robot's heading.
 
     This function saves the current heading PID settings to a global
@@ -44,10 +45,16 @@ async def DisablePID(drive_base : DriveBase):
     heading_pid_settings = drive_base.heading_control().pid()
     print(f"previous heading_pid_settings={heading_pid_settings}")
     drive_base.heading_control.pid(
-        heading_pid_settings[0]/10, 0, 0, heading_pid_settings[3], heading_pid_settings[4])
+        heading_pid_settings[0] / 10,
+        0,
+        0,
+        heading_pid_settings[3],
+        heading_pid_settings[4],
+    )
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
-async def EnablePID(drive_base : DriveBase):
+
+async def enable_pid(drive_base: DriveBase):
     """Restores the heading PID control to its original settings.
 
     This function restores the PID gains (proportional, integral, derivative)
@@ -59,39 +66,59 @@ async def EnablePID(drive_base : DriveBase):
     Args:
         drive_base (DriveBase): The drive base object.
     """
-    global heading_pid_settings    
+    global heading_pid_settings
     if not heading_pid_settings:
         print("heading_pid_settings is empty, cannot enable PID.")
         return
-    
+
     print(f"previous heading_pid_settings={drive_base.heading_control().pid()}")
     drive_base.heading_control.pid(*heading_pid_settings)
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
 
-async def _turn_by_wheel_at_speed(prime_hub : PrimeHub,
-                                  drive_base : DriveBase,
-                                  left_wheel : Motor,
-                                  right_wheel : Motor,
-                                  target_angle, wheel_speed, angle_error):
+async def _turn_by_wheel_at_speed(
+    prime_hub: PrimeHub,
+    drive_base: DriveBase,
+    left_wheel: Motor,
+    right_wheel: Motor,
+    target_angle,
+    wheel_speed,
+    angle_error,
+):
     delta_heading = target_angle - prime_hub.imu.heading()
     print(f"init heading={prime_hub.imu.heading()}")
-    print(f"init drive_base angle={drive_base.angle()}")
     print(f"init delta angle={delta_heading}")
     while not -angle_error <= delta_heading <= angle_error:
         # negative delta_heading means counter-clockwise turn
         speed = wheel_speed if delta_heading > 0 else -wheel_speed
         left_wheel.run(speed)
         right_wheel.run(-speed)
-        await wait(10)        
+        await wait(10)
         delta_heading = target_angle - prime_hub.imu.heading()
     print(f"heading after turn {angle_error} {prime_hub.imu.heading()}")
 
-async def turn_by_wheel(prime_hub : PrimeHub,
-                        drive_base : DriveBase,
-                        left_wheel : Motor, 
-                        right_wheel : Motor, 
-                        target_angle : int):
+
+def _normalize_angle(angle):
+    """Normalizes an angle to the range [-180, 180).
+
+    Args:
+        angle (int): The angle to normalize.
+
+    Returns:
+        int: The normalized angle.
+    """
+    return (angle + 180) % 360 - 180
+
+
+async def turn_by_wheel(
+    prime_hub: PrimeHub,
+    drive_base: DriveBase,
+    left_wheel: Motor,
+    right_wheel: Motor,
+    target_angle: int,
+    max_turn_speed=200,
+    min_turn_speed=30,
+):
     """Turns the robot to a specific angle.
 
     This function turns the robot to a given target angle by first turning
@@ -105,20 +132,39 @@ async def turn_by_wheel(prime_hub : PrimeHub,
         right_wheel: The right motor of the robot.
         target_angle: The target angle to turn to.
     """
-    print(f"TurnByWheel target_angle={target_angle}")
+    # Normalize target angle to be within +/- 180 degrees of current heading.
+    # prime_hub.imu.heading() can be any value, not limited to [0, 360)
+    heading = prime_hub.imu.heading()
+    normalized_target = _normalize_angle(target_angle - heading) + heading
+    print(f"TurnByWheel target_angle={target_angle} {normalized_target }")
     # Turn fast until close to target angle
-    await _turn_by_wheel_at_speed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
+    await _turn_by_wheel_at_speed(
+        prime_hub,
+        drive_base,
+        left_wheel,
+        right_wheel,
+        normalized_target,
+        max_turn_speed,
+        10,
+    )
     # Turn slow to fine tune the heading
-    await _turn_by_wheel_at_speed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
+    await _turn_by_wheel_at_speed(
+        prime_hub,
+        drive_base,
+        left_wheel,
+        right_wheel,
+        normalized_target,
+        min_turn_speed,
+        1,
+    )
     left_wheel.stop()
     right_wheel.stop()
-    print(f"heading after TurnByWheel {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
+    print(f"heading after TurnByWheel {prime_hub.imu.heading()}")
 
 
-async def MoveUntilBlack(wheel : Motor,
-                         color_sensor : ColorSensor,
-                         black_threshold=20,                         
-                         speed=100):
+async def move_until_black(
+    wheel: Motor, color_sensor: ColorSensor, black_threshold=20, speed=100
+):
     wheel.run(speed)
     reflection = await color_sensor.reflection()
     while reflection > black_threshold:
@@ -126,10 +172,10 @@ async def MoveUntilBlack(wheel : Motor,
         reflection = await color_sensor.reflection()
     wheel.hold()
 
-async def MoveUntilWhite(wheel : Motor,
-                         color_sensor : ColorSensor,
-                         white_threshold=90,                         
-                         speed=100):
+
+async def move_until_white(
+    wheel: Motor, color_sensor: ColorSensor, white_threshold=90, speed=100
+):
     wheel.run(speed)
     reflection = await color_sensor.reflection()
     while reflection < white_threshold:
@@ -137,28 +183,31 @@ async def MoveUntilWhite(wheel : Motor,
         reflection = await color_sensor.reflection()
     wheel.hold()
 
-async def AlignOnColorLine(left_wheel : Motor, 
-                           right_wheel : Motor, 
-                           left_color_sensor : ColorSensor,
-                           right_color_sensor : ColorSensor, 
-                           speed=100,
-                           black_threshold=20,
-                           white_threshold=90):    
+
+async def align_on_color_line(
+    left_wheel: Motor,
+    right_wheel: Motor,
+    left_color_sensor: ColorSensor,
+    right_color_sensor: ColorSensor,
+    speed=100,
+    black_threshold=20,
+    white_threshold=90,
+):
     # Both wheels move forward until sensed black line
     await multitask(
-        MoveUntilBlack(left_wheel, left_color_sensor, black_threshold, speed),
-        MoveUntilBlack(right_wheel, right_color_sensor, black_threshold, speed)
+        move_until_black(left_wheel, left_color_sensor, black_threshold, speed),
+        move_until_black(right_wheel, right_color_sensor, black_threshold, speed),
     )
     print("Aligned on black line")
     print(f"Left reflection {await left_color_sensor.reflection()}")
     print(f"Right reflection {await right_color_sensor.reflection()}")
 
-    # At this point both color sensors have detected black line. Move backward 
-    # until both sensors detect white surface. Thus the base lands between white 
+    # At this point both color sensors have detected black line. Move backward
+    # until both sensors detect white surface. Thus the base lands between white
     # and black lines.
     await multitask(
-        MoveUntilWhite(left_wheel, left_color_sensor, white_threshold, -speed),
-        MoveUntilWhite(right_wheel, right_color_sensor, white_threshold, -speed)
+        move_until_white(left_wheel, left_color_sensor, white_threshold, -speed),
+        move_until_white(right_wheel, right_color_sensor, white_threshold, -speed),
     )
     print("Aligned on white line")
     print(f"Left reflection {await left_color_sensor.reflection()}")
