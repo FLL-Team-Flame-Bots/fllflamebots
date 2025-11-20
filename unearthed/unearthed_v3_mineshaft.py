@@ -29,10 +29,6 @@ async def subtask3():
     drive_base.use_gyro(True)
 
 
-
-
-
-
 async def main():
     watch.reset()
     print('Battery', prime_hub.battery.voltage(), sep=", ")

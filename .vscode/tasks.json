@@ -9,7 +9,10 @@
             },
             "osx": {
               "command": "${workspaceFolder}/.venv/bin/pybricksdev"
-            },            
+            },
+            "linux": {
+              "command": "${workspaceFolder}/.venv/bin/pybricksdev"
+            },
             "args": [
                 "run",
                 "ble",
@@ -55,7 +58,8 @@
             "description": "Which Robot?",
             "options": [
                 "Austin Pyhub",
-                "Austin Pyhub2"
+                "Austin Pyhub2",
+                "Austin Pyhub3"
             ]
         }
     ]
