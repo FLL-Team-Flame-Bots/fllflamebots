@@ -40,7 +40,7 @@ async def main():
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     drive_base.settings(turn_rate=100)
-    await drive_base.straight(735)     
+    await drive_base.straight(730)     
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
     await straight_at_speed(drive_base, 120, speed=300, acceleration=200)    
     #await drive_base.straight(120)
@@ -51,10 +51,8 @@ async def main():
 
     # Face mission 4, back up a bit, drop right arm all the way down.
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
-    await multitask(
-        drive_base.straight(-135),
-        right_motor.run_until_stalled(-300, Stop.HOLD, 50)
-    )
+    await drive_base.straight(-135)
+    await right_motor.run_until_stalled(-300, Stop.HOLD, 50)
     #await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
     print(f"heading after backoff {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then 
@@ -72,11 +70,11 @@ async def main():
     # Lower left arm to pick up artifact.
     await multitask(
         wait(2000),
-        left_motor.run_until_stalled(-500, Stop.HOLD, 50),
-        #left_motor.run_angle(300, -280),
+        left_motor.run_until_stalled(-500, Stop.HOLD, 80),
+        #left_motor.run_angle(1000, -290),
         race =True, 
     )
-    await left_motor.run_angle(150, 300)
+    await left_motor.run_angle(150, 270)
     # Back off, turn -180 toward forum
     await multitask(
         drive_base.straight(-90),
@@ -88,9 +86,9 @@ async def main():
     #await left_motor.run_angle(1000, 100)
     await drive_base.straight(-70)
     await drive_base.turn(prime_hub.imu.heading() + 65)
-    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -300)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -295)
     print(f"heading toward last flag {prime_hub.imu.heading()}")    
-    await drive_base.straight(450)
+    await drive_base.straight(460)
     print(f"heading delivered last flag {prime_hub.imu.heading()}")
     print("Total time (ms):", watch.time())
 
