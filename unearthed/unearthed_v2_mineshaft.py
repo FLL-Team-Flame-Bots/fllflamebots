@@ -4,7 +4,7 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, run_task, wait
 
-from utility import TurnByWheel
+from utility import turn_by_wheel
 
 # Set up all devices.
 prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
@@ -40,7 +40,7 @@ async def mission_mineshaft():
     
     await drive_base.turn(-90 - prime_hub.imu.heading())
     await multitask (
-        TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -90),
+        turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -90),
         right_motor.run_target(500, -240)
     )
     # Backward drive to mission 03, life both arms to appropriate angle.

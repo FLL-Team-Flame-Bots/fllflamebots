@@ -5,7 +5,7 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, run_task, wait
 
-from utility import TurnByWheel
+from utility import turn_by_wheel
 
 # Set up all devices.
 prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
@@ -61,7 +61,7 @@ async def main():
         subtask2(),
     )
     await drive_base.turn(-95)
-    await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -89, 100, 2)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -89, 100, 2)
     await drive_base.straight(90)
     await multitask(
         leftattachment.run_angle(750, 1100, Stop.COAST),
@@ -74,7 +74,7 @@ async def main():
     drive_base.settings(turn_rate=360)
     drive_base.settings(turn_acceleration=750)
     await drive_base.turn(-42 - prime_hub.imu.heading())
-    await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, -45, 50, 2)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -45, 50, 2)
     print('turning to map', prime_hub.imu.heading(), sep=", ")
     await multitask(
         subtask4(),

@@ -4,7 +4,7 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, run_task, wait
 
-from utility import TurnByWheel, EnablePID, DisablePID
+from utility import turn_by_wheel, EnablePID, DisablePID
 
 # Set up all devices.
 prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
@@ -24,7 +24,7 @@ async def main():
     drive_base.settings(straight_acceleration=300)
     await drive_base.straight(-10)
     await drive_base.straight(750, Stop.COAST)
-    await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
     DisablePID(drive_base)
     await drive_base.straight(150)
     print(f"heading after straight {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")

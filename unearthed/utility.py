@@ -6,11 +6,11 @@ from pybricks.tools import multitask, wait
 
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
-async def StraightAtSpeed(drive_base : DriveBase,
-                          distance : int,
-                          speed = -1,
-                          acceleration = -1,
-                          then=Stop.HOLD):
+async def straight_at_speed(drive_base : DriveBase,
+                            distance : int,
+                            speed = -1,
+                            acceleration = -1,
+                            then=Stop.HOLD):
     """
     Moves the robot straight for a given distance at a specified speed and acceleration.
     Afterwards, set speed and acceleration back to their original values.
@@ -69,11 +69,11 @@ async def EnablePID(drive_base : DriveBase):
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
 
-async def _TurnByWheelAtSpeed(prime_hub : PrimeHub,
-                              drive_base : DriveBase,
-                              left_wheel : Motor,
-                              right_wheel : Motor,
-                              target_angle, wheel_speed, angle_error):
+async def _turn_by_wheel_at_speed(prime_hub : PrimeHub,
+                                  drive_base : DriveBase,
+                                  left_wheel : Motor,
+                                  right_wheel : Motor,
+                                  target_angle, wheel_speed, angle_error):
     delta_heading = target_angle - prime_hub.imu.heading()
     print(f"init heading={prime_hub.imu.heading()}")
     print(f"init drive_base angle={drive_base.angle()}")
@@ -87,11 +87,11 @@ async def _TurnByWheelAtSpeed(prime_hub : PrimeHub,
         delta_heading = target_angle - prime_hub.imu.heading()
     print(f"heading after turn {angle_error} {prime_hub.imu.heading()}")
 
-async def TurnByWheel(prime_hub : PrimeHub,
-                      drive_base : DriveBase,
-                      left_wheel : Motor, 
-                      right_wheel : Motor, 
-                      target_angle : int):
+async def turn_by_wheel(prime_hub : PrimeHub,
+                        drive_base : DriveBase,
+                        left_wheel : Motor, 
+                        right_wheel : Motor, 
+                        target_angle : int):
     """Turns the robot to a specific angle.
 
     This function turns the robot to a given target angle by first turning
@@ -107,9 +107,9 @@ async def TurnByWheel(prime_hub : PrimeHub,
     """
     print(f"TurnByWheel target_angle={target_angle}")
     # Turn fast until close to target angle
-    await _TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
+    await _turn_by_wheel_at_speed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 200, 10)
     # Turn slow to fine tune the heading
-    await _TurnByWheelAtSpeed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
+    await _turn_by_wheel_at_speed(prime_hub, drive_base, left_wheel, right_wheel, target_angle, 30, 1)
     left_wheel.stop()
     right_wheel.stop()
     print(f"heading after TurnByWheel {prime_hub.imu.heading()} drive_base angle {drive_base.angle()}")
