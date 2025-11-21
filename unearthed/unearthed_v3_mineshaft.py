@@ -4,7 +4,7 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, run_task, wait
 
-from utility import disable_pid, enable_pid, turn_by_wheel, straight_at_speed
+from utility import turn_by_wheel, straight_at_speed
 
 # Set up all devices.
 prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
@@ -46,29 +46,20 @@ async def main():
     await drive_base.straight(730)
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
     await straight_at_speed(drive_base, 120, speed=300, acceleration=200)
-    # await drive_base.straight(120)
     # drop flag
     await right_motor.run_angle(300, -200)
     await straight_at_speed(drive_base, 175, speed=300, acceleration=200)
-    # await drive_base.straight(175)
-
+    
     # Face mission 4, back up a bit, drop right arm all the way down.
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
     await drive_base.straight(-135)
     await right_motor.run_until_stalled(-300, Stop.HOLD, 50)
-    # await TurnByWheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
-    print(
-        f"heading after backoff {prime_hub.imu.heading()} "
-        f"drive_base angle {drive_base.angle()}"
-    )
+    print(f"heading after backoff {prime_hub.imu.heading()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
     await drive_base.straight(50)
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
-    print(
-        f"heading toward mission 4 {prime_hub.imu.heading()} "
-        f"drive_base angle {drive_base.angle()}"
-    )
+    print(f"heading toward mission 4 {prime_hub.imu.heading()}")
     await right_motor.run_angle(300, 100)
     await multitask(
         straight_at_speed(drive_base, 120, speed=200, acceleration=200),

@@ -136,7 +136,7 @@ async def turn_by_wheel(
     # prime_hub.imu.heading() can be any value, not limited to [0, 360)
     heading = prime_hub.imu.heading()
     normalized_target = _normalize_angle(target_angle - heading) + heading
-    print(f"TurnByWheel target_angle={target_angle} {normalized_target }")
+    print(f"turn_by_wheel target_angle={target_angle} {normalized_target }")
     # Turn fast until close to target angle
     await _turn_by_wheel_at_speed(
         prime_hub,
