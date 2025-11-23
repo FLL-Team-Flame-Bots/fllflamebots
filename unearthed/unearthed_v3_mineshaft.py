@@ -43,9 +43,9 @@ async def main():
     drive_base.settings(straight_speed=600)
     drive_base.settings(straight_acceleration=300)
     drive_base.settings(turn_rate=100)
-    await drive_base.straight(730)
+    await drive_base.straight(710)
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
-    await straight_at_speed(drive_base, 120, speed=300, acceleration=200)
+    await straight_at_speed(drive_base, 110, speed=300, acceleration=200)
     # drop flag
     await right_motor.run_angle(300, -200)
     await straight_at_speed(drive_base, 175, speed=300, acceleration=200)
@@ -57,13 +57,13 @@ async def main():
     print(f"heading after backoff {prime_hub.imu.heading()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await drive_base.straight(50)
+    await drive_base.straight(70)
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
     print(f"heading toward mission 4 {prime_hub.imu.heading()}")
-    await right_motor.run_angle(300, 100)
+    await right_motor.run_angle(300, 110)
     await multitask(
-        straight_at_speed(drive_base, 120, speed=200, acceleration=200),
-        right_motor.run_angle(140, 80),
+        straight_at_speed(drive_base, 140, speed=140, acceleration=200),
+        right_motor.run_angle(110, 70),
     )
     await wait(100)
 
@@ -77,15 +77,15 @@ async def main():
     await left_motor.run_angle(150, 270)
     # Back off, turn -180 toward forum
     await multitask(
-        drive_base.straight(-90), right_motor.run_until_stalled(500, Stop.HOLD, 50)
+        drive_base.straight(-90), right_motor.run_until_stalled(400, Stop.HOLD, 50)
     )
     await drive_base.turn(-180)
     await left_motor.run_target(-1000, -150)
     await left_motor.run_until_stalled(1000, Stop.HOLD, 50)
     # await left_motor.run_angle(1000, 100)
     await drive_base.straight(-70)
-    await drive_base.turn(prime_hub.imu.heading() + 65)
-    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -295)
+    await drive_base.turn(prime_hub.imu.heading() + 70)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, -290)
     print(f"heading toward last flag {prime_hub.imu.heading()}")
     await drive_base.straight(460)
     print(f"heading delivered last flag {prime_hub.imu.heading()}")
