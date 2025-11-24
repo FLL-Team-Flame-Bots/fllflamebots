@@ -48,24 +48,26 @@ async def main():
     await straight_at_speed(drive_base, 110, speed=300, acceleration=200)
     # drop flag
     await right_motor.run_angle(300, -200)
-    await straight_at_speed(drive_base, 175, speed=300, acceleration=200)
+    await straight_at_speed(drive_base, 185, speed=300, acceleration=200)
     
     # Face mission 4, back up a bit, drop right arm all the way down.
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
     await drive_base.straight(-135)
     await right_motor.run_until_stalled(-300, Stop.HOLD, 50)
     print(f"heading after backoff {prime_hub.imu.heading()}")
+    print(f"right motor angle after stalled {right_motor.angle()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await drive_base.straight(70)
+    await drive_base.straight(80)
     await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
     print(f"heading toward mission 4 {prime_hub.imu.heading()}")
-    await right_motor.run_angle(300, 110)
+    await right_motor.run_target(300, -370)
     await multitask(
-        straight_at_speed(drive_base, 140, speed=140, acceleration=200),
-        right_motor.run_angle(110, 70),
+        straight_at_speed(drive_base, 115, speed=140, acceleration=100),
+        right_motor.run_target(200, -320),
     )
-    await wait(100)
+    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 0)
+    #await wait(100)
 
     # Lower left arm to pick up artifact.
     await multitask(
