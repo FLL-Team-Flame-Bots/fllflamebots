@@ -2,7 +2,7 @@ from pybricks.hubs import PrimeHub
 from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
-from pybricks.tools import StopWatch, multitask
+from pybricks.tools import StopWatch, multitask, wait
 from utility import straight_at_speed, turn_by_wheel
 
 
@@ -81,3 +81,33 @@ class UnearthedBot:
             acceleration=acceleration,
             then=then,
         )
+
+    async def steer_turn(
+        self, target_angle: int, max_wheel_speed=200, forward=True, angle_error=1
+    ):
+        """
+        In contrast to DriveBase.turn, this method moves both wheel at same direction (both forward or backward)
+        at different speed. It is to avoid the gear backlash when both wheels move in opposite direction.
+        """
+        speed_factor = 1 if forward else -1
+        low_wheel_speed = 5 * speed_factor
+        heading = self.heading()
+        delta_heading = target_angle - heading
+        print(f"steer_turn init heading={heading}")
+        print(f"steer_turn init delta angle={delta_heading}")
+
+        while not -angle_error <= delta_heading <= angle_error:
+            high_wheel_speed = (
+                max_wheel_speed if abs(delta_heading) > 10 else 15
+            ) * speed_factor
+            if (forward and delta_heading > 0) or (not forward and delta_heading < 0):
+                self.leftwheel.run(high_wheel_speed)
+                self.rightwheel.run(low_wheel_speed)
+            else:
+                self.rightwheel.run(high_wheel_speed)
+                self.leftwheel.run(low_wheel_speed)
+            await wait(10)
+            delta_heading = target_angle - self.heading()
+        self.leftwheel.stop
+        self.rightwheel.stop
+        print(f"heading after steer turn {self.heading()}")

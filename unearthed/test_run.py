@@ -4,29 +4,21 @@ from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, run_task, wait
 
-from utility import turn_by_wheel, enable_pid, disable_pid
+from unearthed_bot import UnearthedBot
 
 # Set up all devices.
-prime_hub = PrimeHub(top_side=Axis.Z, front_side=Axis.X)
-rightwheel = Motor(Port.C, Direction.CLOCKWISE)
-leftwheel = Motor(Port.D, Direction.COUNTERCLOCKWISE)
-drive_base = DriveBase(leftwheel, rightwheel, 62.4, 80)
-left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
-right_motor = Motor(Port.F, Direction.COUNTERCLOCKWISE)
-
-# Initialize variables.
-heading = 0
-distance = 0
+bot = UnearthedBot()
 
 
 async def main():
-    drive_base.use_gyro(True)
-    drive_base.settings(straight_speed=600)
-    drive_base.settings(straight_acceleration=300)
-    await drive_base.turn(400)
-    print("Initial heading:", prime_hub.imu.heading())
-    await turn_by_wheel(prime_hub, drive_base, leftwheel, rightwheel, 90)
-    print("Heading after 90 turn:", prime_hub.imu.heading())
+    print("Battery", bot.prime_hub.battery.voltage(), sep=", ")
+    drive_base = bot.drive_base
+    await drive_base.straight(-200)
+    print("Heading after straight:", bot.heading())
+    await bot.steer_turn(90, forward=True)
+    print("Heading after 90 steer turn:", bot.heading())
+    await drive_base.straight(100)
+    print("Heading after 2nd straight:", bot.heading())
 
     # await drive_base.straight(-10)
     # await drive_base.straight(750, Stop.COAST)
