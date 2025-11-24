@@ -98,7 +98,7 @@ class UnearthedBot:
 
         while not -angle_error <= delta_heading <= angle_error:
             high_wheel_speed = (
-                max_wheel_speed if abs(delta_heading) > 10 else 15
+                max_wheel_speed if abs(delta_heading) > 5 else 20
             ) * speed_factor
             if (forward and delta_heading > 0) or (not forward and delta_heading < 0):
                 self.leftwheel.run(high_wheel_speed)
