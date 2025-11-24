@@ -86,8 +86,6 @@ async def _turn_by_wheel_at_speed(
     angle_error,
 ):
     delta_heading = target_angle - prime_hub.imu.heading()
-    print(f"init heading={prime_hub.imu.heading()}")
-    print(f"init delta angle={delta_heading}")
     while not -angle_error <= delta_heading <= angle_error:
         # negative delta_heading means counter-clockwise turn
         speed = wheel_speed if delta_heading > 0 else -wheel_speed
@@ -95,10 +93,9 @@ async def _turn_by_wheel_at_speed(
         right_wheel.run(-speed)
         await wait(10)
         delta_heading = target_angle - prime_hub.imu.heading()
-    print(f"heading after turn {angle_error} {prime_hub.imu.heading()}")
 
 
-def _normalize_angle(angle):
+def normalize_angle(angle):
     """Normalizes an angle to the range [-180, 180).
 
     Args:
@@ -135,8 +132,7 @@ async def turn_by_wheel(
     # Normalize target angle to be within +/- 180 degrees of current heading.
     # prime_hub.imu.heading() can be any value, not limited to [0, 360)
     heading = prime_hub.imu.heading()
-    normalized_target = _normalize_angle(target_angle - heading) + heading
-    print(f"turn_by_wheel target_angle={target_angle} {normalized_target }")
+    normalized_target = normalize_angle(target_angle - heading) + heading
     # Turn fast until close to target angle
     await _turn_by_wheel_at_speed(
         prime_hub,

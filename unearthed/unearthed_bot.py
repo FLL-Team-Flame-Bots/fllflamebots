@@ -3,7 +3,7 @@ from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, wait
-from utility import straight_at_speed, turn_by_wheel
+from utility import normalize_angle, straight_at_speed, turn_by_wheel
 
 
 class UnearthedBot:
@@ -53,7 +53,7 @@ class UnearthedBot:
 
     async def turn_by_wheel(
         self,
-        target_angle: float,
+        target_angle: int,
     ):
         await turn_by_wheel(
             self.prime_hub,
@@ -65,7 +65,7 @@ class UnearthedBot:
 
     async def straight_at_speed(
         self,
-        distance: float,
+        distance: int,
         speed: int = -1,
         acceleration: int = -1,
         then=Stop.COAST,
@@ -92,9 +92,8 @@ class UnearthedBot:
         speed_factor = 1 if forward else -1
         low_wheel_speed = 5 * speed_factor
         heading = self.heading()
-        delta_heading = target_angle - heading
-        print(f"steer_turn init heading={heading}")
-        print(f"steer_turn init delta angle={delta_heading}")
+        normalized_target = normalize_angle(target_angle - heading) + heading
+        delta_heading = normalized_target - heading
 
         while not -angle_error <= delta_heading <= angle_error:
             high_wheel_speed = (
@@ -107,7 +106,11 @@ class UnearthedBot:
                 self.rightwheel.run(high_wheel_speed)
                 self.leftwheel.run(low_wheel_speed)
             await wait(10)
-            delta_heading = target_angle - self.heading()
+            delta_heading = normalized_target - self.heading()
         self.leftwheel.stop
         self.rightwheel.stop
         print(f"heading after steer turn {self.heading()}")
+
+    async def timeout(self, duration_ms: int, message: str):
+        await wait(duration_ms)
+        print(message)
