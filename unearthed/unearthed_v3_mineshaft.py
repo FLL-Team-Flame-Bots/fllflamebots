@@ -8,7 +8,12 @@ bot = UnearthedBot()
 
 async def main():
     # Set up all devices.
-    await bot.initialize()
+    await multitask(
+        bot.reset_left_motor(),
+        bot.reset_right_motor(),
+        bot.reset_base(),
+    )
+    await bot.init_setting()
     drive_base = bot.drive_base
     left_motor = bot.left_motor
     right_motor = bot.right_motor

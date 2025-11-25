@@ -17,29 +17,25 @@ class UnearthedBot:
         self.left_motor = Motor(Port.B, Direction.CLOCKWISE)
         self.right_motor = Motor(Port.F, Direction.COUNTERCLOCKWISE)
 
-    async def reset_motor(self, motor: Motor, forward, speed):
-        await motor.run_until_stalled(forward * speed, Stop.HOLD, 50)
+    async def __reset_motor(self, motor: Motor, forward: bool, speed: int):
+        factor = 1 if forward else -1
+        await motor.run_until_stalled(factor * speed, Stop.HOLD, 50)
         motor.reset_angle(0)
 
-    async def reset_left_motor(self, forward=1, speed=500):
-        await self.reset_motor(self.left_motor, forward, speed)
+    async def reset_left_motor(self, forward=True, speed=500):
+        await self.__reset_motor(self.left_motor, forward, speed)
 
-    async def reset_right_motor(self, forward=1, speed=500):
-        await self.reset_motor(self.right_motor, forward, speed)
+    async def reset_right_motor(self, forward=True, speed=500):
+        await self.__reset_motor(self.right_motor, forward, speed)
 
     async def reset_base(self, distance=-10):
         await self.drive_base.straight(distance)
         self.drive_base.reset(0, 0)
         self.drive_base.use_gyro(True)
 
-    async def initialize(self):
+    async def init_setting(self):
         self.watch.reset()
         print("Battery", self.prime_hub.battery.voltage(), sep=", ")
-        await multitask(
-            self.reset_left_motor(),
-            self.reset_right_motor(),
-            self.reset_base(),
-        )
         self.drive_base.settings(straight_speed=600)
         self.drive_base.settings(straight_acceleration=300)
         self.drive_base.settings(turn_rate=100)
