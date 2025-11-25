@@ -32,14 +32,9 @@ class UnearthedBot:
         self.drive_base.reset(0, 0)
         self.drive_base.use_gyro(True)
 
-    async def initialize(self):
+    def initialize(self):
         self.watch.reset()
         print("Battery", self.prime_hub.battery.voltage(), sep=", ")
-        await multitask(
-            self.reset_left_motor(),
-            self.reset_right_motor(),
-            self.reset_base(),
-        )
         self.drive_base.settings(straight_speed=600)
         self.drive_base.settings(straight_acceleration=300)
         self.drive_base.settings(turn_rate=100)
