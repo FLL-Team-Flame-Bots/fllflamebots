@@ -33,7 +33,7 @@ class UnearthedBot:
         self.drive_base.reset(0, 0)
         self.drive_base.use_gyro(True)
 
-    def initialize(self):
+    def init_setting(self):
         self.watch.reset()
         print("Battery", self.prime_hub.battery.voltage(), sep=", ")
         self.drive_base.settings(straight_speed=600)
