@@ -84,7 +84,7 @@ class UnearthedBot:
         """
         Wrapper for the utility function of the same name.
         """
-        steer_turn(
+        await steer_turn(
             self.prime_hub,
             self.leftwheel,
             self.rightwheel,

@@ -220,9 +220,9 @@ async def steer_turn(
             left_wheel.run(low_wheel_speed)
         await wait(10)
         delta_heading = normalized_target - prime_hub.imu.heading()
-        left_wheel.stop()
-        right_wheel.stop()
-        print(f"heading after steer turn {prime_hub.imu.heading()}")
+    left_wheel.hold()
+    right_wheel.hold()
+    print(f"heading after steer turn {prime_hub.imu.heading()}")
 
 
 async def move_until_black(
