@@ -2,6 +2,7 @@ from pybricks.parameters import Stop
 from pybricks.pupdevices import Motor
 from pybricks.tools import multitask, run_task, wait
 from unearthed_bot import UnearthedBot
+from utility import timeout
 
 bot = UnearthedBot()
 
@@ -62,7 +63,7 @@ async def main():
     await multitask(
         multitask(
             bot.straight_at_speed(130, speed=300, acceleration=200),
-            bot.timeout(2000, "straight to mineshaft timeout"),
+            timeout(2000, "straight to mineshaft timeout"),
             race=True,
         ),
         lift_shaft_during_move(),

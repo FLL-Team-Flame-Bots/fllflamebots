@@ -3,7 +3,7 @@ from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask, wait
-from utility import normalize_angle, straight_at_speed, turn_by_wheel
+from utility import normalize_angle, steer_turn, straight_at_speed, turn_by_wheel
 
 
 class UnearthedBot:
@@ -82,31 +82,14 @@ class UnearthedBot:
         self, target_angle: int, max_wheel_speed=200, forward=True, angle_error=1
     ):
         """
-        In contrast to DriveBase.turn, this method moves both wheel at same direction (both forward or backward)
-        at different speed. It is to avoid the gear backlash when both wheels move in opposite direction.
+        Wrapper for the utility function of the same name.
         """
-        speed_factor = 1 if forward else -1
-        low_wheel_speed = 5 * speed_factor
-        heading = self.heading()
-        normalized_target = normalize_angle(target_angle - heading) + heading
-        delta_heading = normalized_target - heading
-
-        while not -angle_error <= delta_heading <= angle_error:
-            high_wheel_speed = (
-                max_wheel_speed if abs(delta_heading) > 5 else 20
-            ) * speed_factor
-            if (forward and delta_heading > 0) or (not forward and delta_heading < 0):
-                self.leftwheel.run(high_wheel_speed)
-                self.rightwheel.run(low_wheel_speed)
-            else:
-                self.rightwheel.run(high_wheel_speed)
-                self.leftwheel.run(low_wheel_speed)
-            await wait(10)
-            delta_heading = normalized_target - self.heading()
-        self.leftwheel.stop
-        self.rightwheel.stop
-        print(f"heading after steer turn {self.heading()}")
-
-    async def timeout(self, duration_ms: int, message: str):
-        await wait(duration_ms)
-        print(message)
+        steer_turn(
+            self.prime_hub,
+            self.leftwheel,
+            self.rightwheel,
+            target_angle,
+            max_wheel_speed,
+            forward,
+            angle_error,
+        )

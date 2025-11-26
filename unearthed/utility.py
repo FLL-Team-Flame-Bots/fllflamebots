@@ -7,6 +7,20 @@ from pybricks.tools import multitask, wait
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
 
+async def timeout(duration_ms: int, message: str):
+    """
+    Waits for a specified duration in milliseconds and then prints a message.
+    Often used in multitask with race=True to implement timeouts if main task
+    gets stuck and does not finish in time.
+
+    Args:
+        duration_ms (int): The duration to wait in milliseconds.
+        message (str): The message to print after waiting
+    """
+    await wait(duration_ms)
+    print(message)
+
+
 async def straight_at_speed(
     drive_base: DriveBase, distance: int, speed=-1, acceleration=-1, then=Stop.HOLD
 ):
@@ -156,6 +170,59 @@ async def turn_by_wheel(
     left_wheel.stop()
     right_wheel.stop()
     print(f"heading after TurnByWheel {prime_hub.imu.heading()}")
+
+
+async def steer_turn(
+    prime_hub: PrimeHub,
+    left_wheel: Motor,
+    right_wheel: Motor,
+    target_angle: int,
+    max_wheel_speed=200,
+    forward=True,
+    angle_error=1,
+):
+    """
+    In contrast to DriveBase.turn, this method moves both wheel at same direction (both forward or backward)
+    at different speed. It is to avoid the gear backlash when both wheels move in opposite direction.
+
+    Args:
+        prime_hub (PrimeHub): The PrimeHub object.
+        left_wheel (Motor): The left motor of the robot.
+        right_wheel (Motor): The right motor of the robot.
+        target_angle (int): The target angle to turn to.
+        max_wheel_speed (int, optional): The maximum speed for the faster wheel.
+            Defaults to 200.
+        forward (bool, optional): Whether the robot should move forward while turning.
+            If False, the robot moves backward. Defaults to True.
+        angle_error (int, optional): The acceptable error range for the target angle.
+            The turn stops when the robot's heading is within this range of the
+            target angle. Defaults to 1.
+
+    Returns:
+        None
+    """
+    speed_factor = 1 if forward else -1
+    low_wheel_speed = 5 * speed_factor
+    heading = prime_hub.imu.heading()
+    normalized_target = normalize_angle(target_angle - heading) + heading
+    delta_heading = normalized_target - heading
+
+    while not -angle_error <= delta_heading <= angle_error:
+        # When orientation is close to target angle, reduce speed to avoid overshoot
+        high_wheel_speed = (
+            max_wheel_speed if abs(delta_heading) > 5 else 20
+        ) * speed_factor
+        if (forward and delta_heading > 0) or (not forward and delta_heading < 0):
+            left_wheel.run(high_wheel_speed)
+            right_wheel.run(low_wheel_speed)
+        else:
+            right_wheel.run(high_wheel_speed)
+            left_wheel.run(low_wheel_speed)
+        await wait(10)
+        delta_heading = normalized_target - prime_hub.imu.heading()
+        left_wheel.stop()
+        right_wheel.stop()
+        print(f"heading after steer turn {prime_hub.imu.heading()}")
 
 
 async def move_until_black(
