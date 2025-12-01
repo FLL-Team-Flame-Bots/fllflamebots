@@ -4,15 +4,6 @@ from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, wait
 
-try:
-    from typing import Awaitable, Union
-
-    MaybeAwaitable = Union[None, Awaitable[None]]
-except ImportError:
-    # We are on the hub; these don't exist, so we define dummy aliases
-    # to prevent the code below from crashing.
-    pass
-
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
 
@@ -181,7 +172,7 @@ async def turn_by_wheel(
     print(f"heading after TurnByWheel {prime_hub.imu.heading()}")
 
 
-def steer_turn(
+async def steer_turn(
     prime_hub: PrimeHub,
     left_wheel: Motor,
     right_wheel: Motor,
@@ -189,7 +180,7 @@ def steer_turn(
     forward=True,
     max_wheel_speed=200,
     angle_error=1,
-) -> MaybeAwaitable:
+):
     """
     In contrast to DriveBase.turn, this method moves both wheel at same direction (both forward or backward)
     at different speed. It is to avoid the gear backlash when both wheels move in opposite direction.
@@ -199,10 +190,10 @@ def steer_turn(
         left_wheel (Motor): The left motor of the robot.
         right_wheel (Motor): The right motor of the robot.
         target_angle (int): The target angle to turn to.
-        max_wheel_speed (int, optional): The maximum speed for the faster wheel.
-            Defaults to 200.
         forward (bool, optional): Whether the robot should move forward while turning.
             If False, the robot moves backward. Defaults to True.
+        max_wheel_speed (int, optional): The maximum speed for the faster wheel.
+            Defaults to 200.
         angle_error (int, optional): The acceptable error range for the target angle.
             The turn stops when the robot's heading is within this range of the
             target angle. Defaults to 1.
@@ -227,7 +218,7 @@ def steer_turn(
         else:
             right_wheel.run(high_wheel_speed)
             left_wheel.run(low_wheel_speed)
-        wait(10)
+        await wait(10)
         delta_heading = normalized_target - prime_hub.imu.heading()
     left_wheel.hold()
     right_wheel.hold()
