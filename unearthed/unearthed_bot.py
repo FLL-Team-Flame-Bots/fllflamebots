@@ -79,7 +79,7 @@ class UnearthedBot:
         )
 
     async def steer_turn(
-        self, target_angle: int, max_wheel_speed=200, forward=True, angle_error=1
+        self, target_angle: int, forward=True, max_wheel_speed=200, angle_error=1
     ):
         """
         Wrapper for the utility function of the same name.
@@ -89,7 +89,7 @@ class UnearthedBot:
             self.leftwheel,
             self.rightwheel,
             target_angle,
-            max_wheel_speed,
             forward,
+            max_wheel_speed,
             angle_error,
         )

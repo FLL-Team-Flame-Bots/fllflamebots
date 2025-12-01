@@ -3,7 +3,15 @@ from pybricks.parameters import Color, Stop
 from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, wait
-from pybricks._common import MaybeAwaitable
+
+try:
+    from typing import Awaitable, Union
+
+    MaybeAwaitable = Union[None, Awaitable[None]]
+except ImportError:
+    # We are on the hub; these don't exist, so we define dummy aliases
+    # to prevent the code below from crashing.
+    pass
 
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
@@ -178,8 +186,8 @@ def steer_turn(
     left_wheel: Motor,
     right_wheel: Motor,
     target_angle: int,
-    max_wheel_speed=200,
     forward=True,
+    max_wheel_speed=200,
     angle_error=1,
 ) -> MaybeAwaitable:
     """
