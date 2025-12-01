@@ -3,6 +3,7 @@ from pybricks.parameters import Color, Stop
 from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, wait
+from pybricks._common import MaybeAwaitable
 
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
@@ -172,7 +173,7 @@ async def turn_by_wheel(
     print(f"heading after TurnByWheel {prime_hub.imu.heading()}")
 
 
-async def steer_turn(
+def steer_turn(
     prime_hub: PrimeHub,
     left_wheel: Motor,
     right_wheel: Motor,
@@ -180,7 +181,7 @@ async def steer_turn(
     max_wheel_speed=200,
     forward=True,
     angle_error=1,
-):
+) -> MaybeAwaitable:
     """
     In contrast to DriveBase.turn, this method moves both wheel at same direction (both forward or backward)
     at different speed. It is to avoid the gear backlash when both wheels move in opposite direction.
@@ -218,7 +219,7 @@ async def steer_turn(
         else:
             right_wheel.run(high_wheel_speed)
             left_wheel.run(low_wheel_speed)
-        await wait(10)
+        wait(10)
         delta_heading = normalized_target - prime_hub.imu.heading()
     left_wheel.hold()
     right_wheel.hold()
