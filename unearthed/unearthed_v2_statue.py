@@ -55,7 +55,7 @@ async def main():
     await drive_base.turn(0 - bot.heading())
     drive_base.settings(straight_speed=1000)
     drive_base.settings(straight_acceleration=1000)
-    await drive_base.arc(-1200, distance=1100)
+    await drive_base.arc(-1200, distance=900)
     bot.stop()
 
 
