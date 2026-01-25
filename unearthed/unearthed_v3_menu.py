@@ -42,8 +42,7 @@ def main():
     elif selected == 4:
         import unearthed_v2_statue
     elif selected == 5:
-        prime_hub.display.char('Traceback (most recent call last): File "<string>", line 1 import unearthed_v3_scale ^^^^^^^ SyntaxError: invalid syntax')
-        print("'Traceback (most recent call last): File '<string>', line 1 import unearthed_v3_scale            ^^^^^^^ SyntaxError: invalid syntax")
+        import unearthed_v3_ship
     elif selected == 6:
         import unearthed_v3_mapreveal
     elif selected == 7:
