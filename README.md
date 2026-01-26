@@ -68,6 +68,25 @@ To run the code on the robot, we use the Pybricks web interface.
 
 For more detailed instructions, please refer to the official Pybricks documentation.
 
+### Step 5: Setup Keybindings (VS Code)
+
+To use keyboard shortcuts (like `Ctrl`+`Shift`+`R` to run code), you need to configure your VS Code user settings.
+
+1.  Open VS Code settings (`.vscode/settings.json`) and ensure `"fllflamebots.active": true` is present (it should already be checked in).
+2.  Open your global Keyboard Shortcuts JSON:
+    *   Press `Ctrl`+`Shift`+`P`.
+    *   Type "Preferences: Open Keyboard Shortcuts (JSON)".
+3.  Add the following entry to the list:
+
+```json
+    {
+        "key": "ctrl+shift+r",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run Pybricks on Robot",
+        "when": "config.fllflamebots.active"
+    }
+```
+
 ## Contributing
 
 We encourage all team members to contribute!

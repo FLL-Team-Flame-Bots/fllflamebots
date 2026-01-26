@@ -1,7 +1,8 @@
 {
   "python.envFile": "${workspaceFolder}/.env",
-   "[python]": {
+  "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true
-  }
+  },
+  "fllflamebots.active": true
 }
