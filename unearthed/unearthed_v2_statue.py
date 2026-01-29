@@ -23,7 +23,7 @@ async def main():
     # Move forward and turn toward statue mission.
     await drive_base.straight(730)
     await multitask(
-        bot.steer_turn(45, max_wheel_speed=300),
+        bot.steer_turn(45, max_wheel_speed=300, angle_error=1),
         right_motor.run_target(500, 210),
     )
     print(f"heading after turn to statue {bot.heading()}")
@@ -34,9 +34,9 @@ async def main():
     # await drive_base.straight(-15)
     # Rotate dump box to dump artifacts in forum.
     async def dump_artifacts():
+        await wait(500)
+        await drive_base.turn(20)
         await left_motor.run_target(300, -200)
-        await wait(200)
-        await left_motor.run_target(300, 0)
 
     # Retry statue lifting as it may not be fully
     # lifted the first time.
@@ -49,13 +49,16 @@ async def main():
     await multitask(lift_status_retry(), dump_artifacts())
 
     # Backoff from forum and move toward left home.
-    await drive_base.straight(-180)
+    await multitask(
+        drive_base.straight(-120, then=Stop.NONE), left_motor.run_target(300, 0)
+    )
+    # await drive_base.straight(-180)
     drive_base.settings(turn_rate=360)
-    drive_base.settings(turn_acceleration=750)
-    await drive_base.turn(0 - bot.heading())
+    drive_base.settings(turn_acceleration=360)
+    await drive_base.turn(40 - bot.heading(), then=Stop.NONE)
     drive_base.settings(straight_speed=1000)
     drive_base.settings(straight_acceleration=1000)
-    await drive_base.arc(-1200, distance=900)
+    await drive_base.arc(-900, distance=1000)
     bot.stop()
 
 
