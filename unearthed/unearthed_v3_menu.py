@@ -40,7 +40,7 @@ def main():
     elif selected == 3:
         import unearthed_v3_scale
     elif selected == 4:
-        import unearthed_v2_statue
+        import unearthed_v3_statue
     elif selected == 5:
         import unearthed_v3_ship
     elif selected == 6:
