@@ -32,7 +32,10 @@ async def main():
     # Face mission 4, back up a bit, drop right arm all the way down.
     await bot.steer_turn(0, forward=False)
     await drive_base.straight(-100)
-    await right_motor.run_until_stalled(-300, Stop.HOLD, 50)
+    await multitask(
+        bot.steer_turn(0, forward=True),
+        right_motor.run_until_stalled(-300, Stop.HOLD, 50)
+    )
     print(f"heading after backoff {bot.heading()}")
     print(f"right motor angle after stalled {right_motor.angle()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then
@@ -89,7 +92,8 @@ async def main():
     await left_motor.run_until_stalled(1000, Stop.HOLD, 50)
     await bot.steer_turn(68, forward=False, max_wheel_speed=300)
     print(f"heading toward last flag {bot.heading()}")
-    await drive_base.straight(530)
+    await bot.straight_at_speed(530, 600, 600, then=Stop.HOLD)
+    #await drive_base.straight(530)
     print(f"heading delivered last flag {bot.heading()}")
     bot.stop()
 
