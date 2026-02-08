@@ -46,8 +46,6 @@ def main():
     elif selected == 6:
         import unearthed_v3_mapreveal
     elif selected == 7:
-        import unearthed_v3_push
-    elif selected == 8:
         import unearthed_v3_mineshaft
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
     print(f"Battery {hub.battery.voltage()}")
