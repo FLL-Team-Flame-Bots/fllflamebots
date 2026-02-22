@@ -30,7 +30,7 @@ def better_menu(*options):
 
 # Based on the selection, run a program.
 def main():
-    selected = better_menu(1, 2, 3, 4, 5, 6, 7, 8)
+    selected = better_menu(1, 2, 3, 4, 5, 6, 7)
     print(f"Selected {selected}")
     run_watch = StopWatch()
     if selected == 1:

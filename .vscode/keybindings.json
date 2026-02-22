@@ -1,0 +1,5 @@
+{
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run Pybricks on Robot"
+}
