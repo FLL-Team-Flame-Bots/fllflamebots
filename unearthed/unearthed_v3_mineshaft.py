@@ -22,12 +22,12 @@ async def main():
     await drive_base.straight(680)
     # await bot.turn_by_wheel(90)
     await bot.steer_turn(90, max_wheel_speed=300)
-    await bot.straight_at_speed(80, speed=300, acceleration=200)
+    await bot.straight_at_speed(100, speed=300, acceleration=200)
     # drop flag
-    await multitask(
-        right_motor.run_angle(300, -250),
-        bot.straight_at_speed(260, speed=300, acceleration=150),
-    )
+    #await multitask(
+    await right_motor.run_angle(300, -250)
+    await bot.straight_at_speed(240, speed=300, acceleration=200)
+    #)
 
     # Face mission 4, back up a bit, drop right arm all the way down.
     await bot.steer_turn(0, forward=False)
