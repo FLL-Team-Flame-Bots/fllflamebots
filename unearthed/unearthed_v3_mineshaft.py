@@ -22,7 +22,7 @@ async def main():
     await drive_base.straight(680)
     # await bot.turn_by_wheel(90)
     await bot.steer_turn(90, max_wheel_speed=300)
-    await bot.straight_at_speed(100, speed=300, acceleration=200)
+    await bot.straight_at_speed(120, speed=300, acceleration=200)
     # drop flag
     #await multitask(
     await right_motor.run_angle(300, -250)
@@ -40,7 +40,7 @@ async def main():
     print(f"right motor angle after stalled {right_motor.angle()}")
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(85, speed=200, acceleration=100)
+    await bot.straight_at_speed(95, speed=200, acceleration=100)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
