@@ -38,7 +38,7 @@ def main():
     elif selected == 2:
         import unearthed_v3_silo
     elif selected == 3:
-        import unearthed_v3_scale
+        import unearthed_v3_scale_nopan
     elif selected == 4:
         import unearthed_v3_statue
     elif selected == 5:
