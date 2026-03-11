@@ -2,8 +2,8 @@ from pybricks.hubs import PrimeHub
 from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
-from pybricks.tools import StopWatch, multitask, wait
-from utility import normalize_angle, steer_turn, straight_at_speed, turn_by_wheel
+from pybricks.tools import StopWatch, multitask
+from utility import steer_turn, straight_at_speed, turn_by_wheel, turn_to_target
 
 
 class UnearthedBot:
@@ -45,14 +45,16 @@ class UnearthedBot:
         print("Stopped, time (ms):", self.watch.time())
 
     def heading(self) -> float:
-        return self.prime_hub.imu.heading()
+        return self.drive_base.angle()
+
+    async def turn_to_target(self, target_angle: int):
+        await turn_to_target(self.drive_base, target_angle)
 
     async def turn_by_wheel(
         self,
         target_angle: int,
     ):
         await turn_by_wheel(
-            self.prime_hub,
             self.drive_base,
             self.leftwheel,
             self.rightwheel,
@@ -85,7 +87,7 @@ class UnearthedBot:
         Wrapper for the utility function of the same name.
         """
         await steer_turn(
-            self.prime_hub,
+            self.drive_base,
             self.leftwheel,
             self.rightwheel,
             target_angle,
@@ -93,3 +95,13 @@ class UnearthedBot:
             max_wheel_speed,
             angle_error,
         )
+
+    async def compensate_backlash(self, forward=True):
+        # Compensate for backlash by first moving in the opposite direction, then moving to the target angle.
+        angle = 5 if forward else -5
+        await multitask(
+            self.leftwheel.run_angle(50, angle), self.rightwheel.run_angle(50, angle)
+        )
+
+    async def adjust_target_angle(self, target_angle: int):
+        turn_to_target(self.drive_base, target_angle)
