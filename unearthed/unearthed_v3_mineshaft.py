@@ -6,6 +6,10 @@ from utility import timeout
 
 bot = UnearthedBot()
 
+# Range:
+# Right motor range (-480, 0)
+# Left motor range (-296, 0)
+
 
 async def main():
     # Set up all devices.
