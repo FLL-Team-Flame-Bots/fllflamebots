@@ -38,7 +38,7 @@ def main():
     elif selected == 2:
         import unearthed_v3_silo_william
     elif selected == 3:
-        import unearthed_v3_scale_william
+        import unearthed_v3_scale_william_nopan
     elif selected == 4:
         import unearthed_v3_statue_william
     elif selected == 5:

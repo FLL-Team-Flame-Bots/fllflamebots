@@ -1,5 +1,5 @@
 from pybricks.hubs import PrimeHub
-from pybricks.parameters import Color, Stop
+from pybricks.parameters import Stop
 from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import multitask, wait
@@ -90,8 +90,11 @@ async def enable_pid(drive_base: DriveBase):
     print(f"new heading_pid_settings={drive_base.heading_control().pid()}")
 
 
+async def turn_to_target(drive_base: DriveBase, target_angle: int):
+    drive_base.turn(target_angle - drive_base.angle())
+
+
 async def _turn_by_wheel_at_speed(
-    prime_hub: PrimeHub,
     drive_base: DriveBase,
     left_wheel: Motor,
     right_wheel: Motor,
@@ -99,14 +102,14 @@ async def _turn_by_wheel_at_speed(
     wheel_speed,
     angle_error,
 ):
-    delta_heading = target_angle - prime_hub.imu.heading()
+    delta_heading = target_angle - drive_base.angle()
     while not -angle_error <= delta_heading <= angle_error:
         # negative delta_heading means counter-clockwise turn
         speed = wheel_speed if delta_heading > 0 else -wheel_speed
         left_wheel.run(speed)
         right_wheel.run(-speed)
         await wait(10)
-        delta_heading = target_angle - prime_hub.imu.heading()
+        delta_heading = target_angle - drive_base.angle()
 
 
 def normalize_angle(angle):
@@ -122,7 +125,6 @@ def normalize_angle(angle):
 
 
 async def turn_by_wheel(
-    prime_hub: PrimeHub,
     drive_base: DriveBase,
     left_wheel: Motor,
     right_wheel: Motor,
@@ -144,12 +146,11 @@ async def turn_by_wheel(
         target_angle: The target angle to turn to.
     """
     # Normalize target angle to be within +/- 180 degrees of current heading.
-    # prime_hub.imu.heading() can be any value, not limited to [0, 360)
-    heading = prime_hub.imu.heading()
+    # drive_base.angle() can be any value, not limited to [0, 360)
+    heading = drive_base.angle()
     normalized_target = normalize_angle(target_angle - heading) + heading
     # Turn fast until close to target angle
     await _turn_by_wheel_at_speed(
-        prime_hub,
         drive_base,
         left_wheel,
         right_wheel,
@@ -159,7 +160,6 @@ async def turn_by_wheel(
     )
     # Turn slow to fine tune the heading
     await _turn_by_wheel_at_speed(
-        prime_hub,
         drive_base,
         left_wheel,
         right_wheel,
@@ -169,11 +169,13 @@ async def turn_by_wheel(
     )
     left_wheel.stop()
     right_wheel.stop()
-    print(f"heading after TurnByWheel {prime_hub.imu.heading()}")
+    await wait(100)  # wait for the robot to stabilize after turn
+    turn_to_target(drive_base, target_angle)
+    print(f"heading after TurnByWheel {drive_base.angle()}")
 
 
 async def steer_turn(
-    prime_hub: PrimeHub,
+    drive_base: DriveBase,
     left_wheel: Motor,
     right_wheel: Motor,
     target_angle: int,
@@ -203,7 +205,7 @@ async def steer_turn(
     """
     speed_factor = 1 if forward else -1
     low_wheel_speed = 5 * speed_factor
-    heading = prime_hub.imu.heading()
+    heading = drive_base.angle()
     normalized_target = normalize_angle(target_angle - heading) + heading
     delta_heading = normalized_target - heading
 
@@ -219,10 +221,12 @@ async def steer_turn(
             right_wheel.run(high_wheel_speed)
             left_wheel.run(low_wheel_speed)
         await wait(10)
-        delta_heading = normalized_target - prime_hub.imu.heading()
+        delta_heading = normalized_target - drive_base.angle()
     left_wheel.hold()
     right_wheel.hold()
-    print(f"heading after steer turn {prime_hub.imu.heading()}")
+    await wait(100)  # wait for the robot to stabilize after turn
+    turn_to_target(drive_base, target_angle)
+    print(f"heading after steer turn {drive_base.angle()}")
 
 
 async def move_until_black(

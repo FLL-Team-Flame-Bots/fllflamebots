@@ -209,3 +209,5 @@ __marimo__/
 # Ignore code that plays with prototype files
 .DS_Store
 **/prototype_*.py
+
+pybricks/

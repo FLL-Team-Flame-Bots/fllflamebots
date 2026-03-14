@@ -12,13 +12,14 @@ from pybricks.tools import hub_menu, run_task, wait
 
 hub = PrimeHub()
 
+
 def better_menu(*options):
     options = list(options)
 
     last_selection = int(hub.system.storage(99, read=1)[0])
     if last_selection not in options:
         last_selection = options[0]
-    
+
     next_idx = (options.index(last_selection) + 1) % len(options)
     options = options[next_idx:] + options[:next_idx]
 
@@ -27,6 +28,7 @@ def better_menu(*options):
     hub.system.storage(99, write=bytes([selection_num]))
 
     return selection_num
+
 
 # Based on the selection, run a program.
 def main():
@@ -38,7 +40,7 @@ def main():
     elif selected == 2:
         import unearthed_v3_silo
     elif selected == 3:
-        import unearthed_v3_scale
+        import unearthed_v3_scale_nopan
     elif selected == 4:
         import unearthed_v3_statue
     elif selected == 5:
@@ -49,5 +51,6 @@ def main():
         import unearthed_v3_mineshaft
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
     print(f"Battery {hub.battery.voltage()}")
+
 
 main()
