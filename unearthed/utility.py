@@ -21,6 +21,12 @@ async def timeout(duration_ms: int, message: str):
     print(message)
 
 
+async def compensate_backlash(left_wheel: Motor, right_wheel: Motor, forward=True):
+    # Compensate for backlash by first moving in the opposite direction, then moving to the target angle.
+    angle = 5 if forward else -5
+    await multitask(left_wheel.run_angle(50, angle), right_wheel.run_angle(50, angle))
+
+
 async def straight_at_speed(
     drive_base: DriveBase, distance: int, speed=-1, acceleration=-1, then=Stop.HOLD
 ):

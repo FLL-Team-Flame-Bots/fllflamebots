@@ -3,7 +3,13 @@ from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
 from pybricks.tools import StopWatch, multitask
-from utility import steer_turn, straight_at_speed, turn_by_wheel, turn_to_target
+from utility import (
+    steer_turn,
+    straight_at_speed,
+    turn_by_wheel,
+    turn_to_target,
+    compensate_backlash,
+)
 
 
 class UnearthedBot:
@@ -97,11 +103,7 @@ class UnearthedBot:
         )
 
     async def compensate_backlash(self, forward=True):
-        # Compensate for backlash by first moving in the opposite direction, then moving to the target angle.
-        angle = 5 if forward else -5
-        await multitask(
-            self.leftwheel.run_angle(50, angle), self.rightwheel.run_angle(50, angle)
-        )
+        compensate_backlash(self.leftwheel, self.rightwheel, forward)
 
     async def adjust_target_angle(self, target_angle: int):
         turn_to_target(self.drive_base, target_angle)
