@@ -25,11 +25,11 @@ async def main():
     await drive_base.straight(680)
     # await drive_base.turn(90)
     await bot.steer_turn(target_angle=90, max_wheel_speed=300)
-    await bot.straight_at_speed(100, speed=300, acceleration=200)
+    await bot.straight_at_speed(120, speed=300, acceleration=200)
 
     async def move_after_release_flag():
-        await wait(100)
-        await bot.straight_at_speed(260, speed=300, acceleration=300)
+        await wait(1000)
+        await bot.straight_at_speed(240, speed=300, acceleration=300)
 
     # drop flag
     await multitask(
@@ -79,19 +79,21 @@ async def main():
         left_motor.run_until_stalled(-500, Stop.HOLD, 60),
         race=True,
     )
-    await left_motor.run_angle(200, 270)
+    await left_motor.run_target(150, 20)
     # Back off, turn -180 toward forum
-    await drive_base.straight(-90)
+    await drive_base.straight(-120)
     await multitask(
         drive_base.turn(-190),
         right_motor.run_until_stalled(400, Stop.HOLD, 50),
     )
     # Drop the artifact in the forum
     await left_motor.run_until_stalled(-1000, Stop.HOLD, 50)
-    await left_motor.run_until_stalled(1000, Stop.HOLD, 50)
-    await bot.steer_turn(80, forward=False, max_wheel_speed=300)
+    await left_motor.run_target(1000, 0)
+    await bot.steer_turn(82, forward=False, max_wheel_speed=300)
     print(f"heading toward last flag {bot.heading()}")
-    await bot.straight_at_speed(580, 600, 600, then=Stop.HOLD)
+    await bot.straight_at_speed(
+        distance=600, speed=600, acceleration=600, then=Stop.HOLD
+    )
     # # await drive_base.straight(530)
     # print(f"heading delivered last flag {bot.heading()}")
     bot.stop()
