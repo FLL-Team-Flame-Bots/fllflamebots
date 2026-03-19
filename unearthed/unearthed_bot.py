@@ -23,16 +23,18 @@ class UnearthedBot:
         self.left_motor = Motor(Port.B, Direction.CLOCKWISE)
         self.right_motor = Motor(Port.F, Direction.COUNTERCLOCKWISE)
 
-    async def __reset_motor(self, motor: Motor, forward: bool, speed: int):
+    async def __reset_motor(
+        self, motor: Motor, forward: bool, speed: int, duty_limit: int = 50
+    ):
         factor = 1 if forward else -1
-        await motor.run_until_stalled(factor * speed, Stop.HOLD, 50)
+        await motor.run_until_stalled(factor * speed, Stop.HOLD, duty_limit)
         motor.reset_angle(0)
 
-    async def reset_left_motor(self, forward=True, speed=500):
-        await self.__reset_motor(self.left_motor, forward, speed)
+    async def reset_left_motor(self, forward=True, speed=500, duty_limit=50):
+        await self.__reset_motor(self.left_motor, forward, speed, duty_limit)
 
-    async def reset_right_motor(self, forward=True, speed=500):
-        await self.__reset_motor(self.right_motor, forward, speed)
+    async def reset_right_motor(self, forward=True, speed=500, duty_limit=50):
+        await self.__reset_motor(self.right_motor, forward, speed, duty_limit)
 
     async def reset_base(self, distance=-10):
         await self.drive_base.straight(distance)
