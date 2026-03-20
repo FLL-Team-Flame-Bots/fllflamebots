@@ -34,23 +34,17 @@ async def main():
         race=True,
     )
 
-    # await drive_base.straight(-15)
     # Rotate dump box to dump artifacts in forum.
     async def dump_artifacts():
-        # await wait(500)
-        # await drive_base.turn(20)
-        await bot.steer_turn(55, max_wheel_speed=300, angle_error=1),
-        await left_motor.run_target(300, -200)
-
-    # Retry statue lifting as it may not be fully
-    # lifted the first time.
-    async def lift_status_retry():
+        await left_motor.run_target(300, -120)
         await wait(500)
-        await right_motor.run_target(500, 200)
-        await right_motor.run_target(500, 70)
-        # await right_motor.run_angle(500, -75)
+        await left_motor.run_target(300, 0)
 
-    # Lifting statue and dumping artifacts can be done in parallel.
+    # Retry statue lifting as it may not be fully lifted the first time.
+    async def lift_status_retry():
+        await right_motor.run_target(500, 180)
+        await right_motor.run_target(500, 40)
+
     await multitask(
         multitask(lift_status_retry(), dump_artifacts()),
         timeout(duration_ms=2000, message="Dump artifacts timeout"),
@@ -58,21 +52,14 @@ async def main():
     )
 
     # Backoff from forum and move toward left home.
-    # await multitask(lift_status_retry(), dump_artifacts())
-
-    # Backoff from forum and move toward left home.
-    await multitask(
-        drive_base.straight(-150, then=Stop.HOLD),
-        left_motor.run_target(300, 0),
-        # right_motor.run_target(500, 0),
-    )
-    # await drive_base.straight(-180)
+    await drive_base.straight(-160, then=Stop.HOLD)
     drive_base.settings(turn_rate=360)
     drive_base.settings(turn_acceleration=360)
-    await drive_base.turn(45 - bot.heading(), then=Stop.NONE)
+    await bot.steer_turn(0, max_wheel_speed=300, angle_error=1)
+    # await drive_base.turn(45 - bot.heading(), then=Stop.NONE)
     drive_base.settings(straight_speed=1000)
     drive_base.settings(straight_acceleration=1000)
-    await drive_base.arc(-900, distance=1000)
+    await drive_base.arc(-1000, distance=1000)
     bot.stop()
 
 
