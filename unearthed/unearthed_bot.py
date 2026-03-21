@@ -109,3 +109,6 @@ class UnearthedBot:
 
     async def adjust_target_angle(self, target_angle: int):
         turn_to_target(self.drive_base, target_angle)
+
+    def voltage(self) -> int:
+        return self.prime_hub.battery.voltage()

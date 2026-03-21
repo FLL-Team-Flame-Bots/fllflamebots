@@ -17,11 +17,17 @@ async def main():
     drive_base = bot.drive_base
     right_motor = bot.right_motor
     left_motor = bot.left_motor
+    voltage = bot.voltage()
 
     # Move forward and turn toward statue mission.
     await drive_base.straight(730)
+    target_angle = 45 if voltage < 8200 else 43
     await multitask(
-        bot.steer_turn(45, max_wheel_speed=300, angle_error=1),
+        bot.steer_turn(
+            target_angle=target_angle,
+            max_wheel_speed=300,
+            angle_error=1,
+        ),
         right_motor.run_target(500, 210),
     )
     print(f"heading after turn to statue {bot.heading()}")
@@ -36,7 +42,7 @@ async def main():
 
     # Rotate dump box to dump artifacts in forum.
     async def dump_artifacts():
-        await left_motor.run_target(300, -120)
+        await left_motor.run_target(150, -120)
         await wait(500)
         await left_motor.run_target(300, 0)
 

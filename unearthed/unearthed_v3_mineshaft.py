@@ -91,7 +91,7 @@ async def main():
     await left_motor.run_target(500, -200, then=Stop.NONE)
     await wait(100)
     await left_motor.run_target(500, 10)
-    await bot.steer_turn(82, forward=False, max_wheel_speed=300)
+    await bot.steer_turn(80, forward=False, max_wheel_speed=300)
     print(f"heading toward last flag {bot.heading()}")
     await bot.straight_at_speed(
         distance=600, speed=600, acceleration=600, then=Stop.HOLD
