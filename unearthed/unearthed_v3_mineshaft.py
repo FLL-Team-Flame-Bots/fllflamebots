@@ -79,7 +79,7 @@ async def main():
         left_motor.run_until_stalled(-500, Stop.HOLD, 60),
         race=True,
     )
-    await left_motor.run_target(150, 20)
+    await left_motor.run_target(150, -20)
     # Back off, turn -180 toward forum
     await drive_base.straight(-120)
     await multitask(
@@ -90,7 +90,7 @@ async def main():
     # await left_motor.run_until_stalled(-1000, Stop.HOLD, 50)
     await left_motor.run_target(500, -200, then=Stop.NONE)
     await wait(100)
-    await left_motor.run_target(500, 0)
+    await left_motor.run_target(500, 10)
     await bot.steer_turn(82, forward=False, max_wheel_speed=300)
     print(f"heading toward last flag {bot.heading()}")
     await bot.straight_at_speed(
