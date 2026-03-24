@@ -22,7 +22,7 @@ async def main():
     left_motor = bot.left_motor
     right_motor = bot.right_motor
 
-    await drive_base.straight(680)
+    await drive_base.straight(700)
     # await drive_base.turn(90)
     await bot.steer_turn(target_angle=90, max_wheel_speed=300)
     await bot.straight_at_speed(120, speed=300, acceleration=200)
@@ -48,7 +48,7 @@ async def main():
     drive_base.turn(0 - bot.heading())
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(70, speed=300, acceleration=200)
+    await bot.straight_at_speed(50, speed=300, acceleration=200)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
