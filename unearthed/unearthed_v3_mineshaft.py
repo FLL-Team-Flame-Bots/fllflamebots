@@ -48,7 +48,7 @@ async def main():
     drive_base.turn(0 - bot.heading())
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(50, speed=300, acceleration=200)
+    await bot.straight_at_speed(55, speed=300, acceleration=200)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
