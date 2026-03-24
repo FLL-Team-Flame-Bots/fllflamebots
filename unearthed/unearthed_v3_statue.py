@@ -47,12 +47,12 @@ async def main():
         await left_motor.run_target(300, 0)
 
     # Retry statue lifting as it may not be fully lifted the first time.
-    async def lift_status_retry():
+    async def lift_statue_retry():
         await right_motor.run_target(500, 180)
         await right_motor.run_target(500, 40)
 
     await multitask(
-        multitask(lift_status_retry(), dump_artifacts()),
+        multitask(lift_statue_retry(), dump_artifacts()),
         timeout(duration_ms=2000, message="Dump artifacts timeout"),
         race=True,
     )
