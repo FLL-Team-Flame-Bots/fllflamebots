@@ -22,9 +22,9 @@ async def main():
     left_motor = bot.left_motor
     right_motor = bot.right_motor
 
-    await drive_base.straight(700)
+    await drive_base.straight(690)
     # await drive_base.turn(90)
-    await bot.steer_turn(target_angle=90, max_wheel_speed=300)
+    await bot.steer_turn(target_angle=90, max_wheel_speed=200)
     await bot.straight_at_speed(120, speed=300, acceleration=200)
 
     async def move_after_release_flag():
@@ -48,23 +48,23 @@ async def main():
     drive_base.turn(0 - bot.heading())
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(55, speed=300, acceleration=200)
+    await bot.straight_at_speed(50, speed=300, acceleration=200)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
-    await right_motor.run_target(150, -320)
+    await right_motor.run_target(150, -330)
 
     print(f"right motor angle after lifting shaft {right_motor.angle()}")
 
     async def lift_shaft_during_move():
-        await wait(500)
-        await right_motor.run_target(50, -300)
+        # await wait(500)
+        await right_motor.run_target(20, -300)
 
     # Go straight toward mission 4, meanwhile right arm lifting shaft.
     await wait(100)
     await multitask(
         multitask(
-            bot.straight_at_speed(150, speed=300, acceleration=200),
+            bot.straight_at_speed(150, speed=200, acceleration=200),
             timeout(2000, "straight to mineshaft timeout"),
             race=True,
         ),
