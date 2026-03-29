@@ -38,15 +38,13 @@ def main():
     elif selected == 2:
         import unearthed_v3_silo_william
     elif selected == 3:
-        import unearthed_v3_scale_william_nopan
+        import unearthed_v3_scale_william
     elif selected == 4:
         import unearthed_v3_statue_william
     elif selected == 5:
         import unearthed_v3_ship_william
     elif selected == 6:
         import unearthed_v3_mapreveal_william
-#    elif selected == 7:
-#        import unearthed_v3_push_william
     elif selected == 7:
         import unearthed_v3_mineshaft_william
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
