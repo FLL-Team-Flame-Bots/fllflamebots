@@ -42,7 +42,7 @@ async def main():
 
     # Rotate dump box to dump artifacts in forum.
     async def dump_artifacts():
-        await left_motor.run_target(150, -120)
+        await left_motor.run_target(150, -140)
         await wait(500)
         await left_motor.run_target(300, 0)
 
