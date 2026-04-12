@@ -11,7 +11,7 @@
 <meta property="og:image" content="https://flamebots.org/images/hero.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://flamebots.org">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="icon" href="images/favicon.png" type="image/png">
 </head>
 <body>
 
@@ -20,13 +20,15 @@
     <img src="images/logo.jpg" alt="Flamebots logo">
     Flamebots <span class="nav-accent">&nbsp;#67092</span>
   </a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
   <ul class="nav-links">
-    <li><a class="active" onclick="show('home',this)">Home</a></li>
-    <li><a onclick="show('about',this)">About</a></li>
-    <li><a onclick="show('members',this)">Members</a></li>
-    <li><a onclick="show('awards',this)">Awards</a></li>
-    <li><a onclick="show('outreach',this)">Outreach</a></li>
-    <li><a onclick="show('contact',this)">Contact</a></li>
+    <li><a class="active" onclick="show('home',this);document.querySelector('.nav-links').classList.remove('open')">Home</a></li>
+    <li><a onclick="show('about',this);document.querySelector('.nav-links').classList.remove('open')">About</a></li>
+    <li><a onclick="show('members',this);document.querySelector('.nav-links').classList.remove('open')">Members</a></li>
+    <li><a onclick="show('awards',this);document.querySelector('.nav-links').classList.remove('open')">Awards</a></li>
+    <li><a onclick="show('outreach',this);document.querySelector('.nav-links').classList.remove('open')">Outreach</a></li>
+    <li><a onclick="show('unearthed',this);document.querySelector('.nav-links').classList.remove('open')">Unearthed</a></li>
+    <li><a onclick="show('contact',this);document.querySelector('.nav-links').classList.remove('open')">Contact</a></li>
   </ul>
 </nav>
 
@@ -71,6 +73,12 @@
 <section id="members">
   <div class="section-title">Our members</div>
   <div class="section-sub">The builders and coders behind the bot</div>
+  <div style="font-size:13px;color:#aaa;text-align:center;margin-bottom:0.5rem;letter-spacing:0.05em;text-transform:uppercase;">Coaches</div>
+  <div class="members-grid" style="margin-bottom:1.5rem;">
+    <div class="member-card"><div class="avatar" style="background:#F3EEF9;color:#6B3FA0">SZ</div><h4>Steven Zhang</h4><p>&nbsp;</p><span class="role-badge" style="background:#F3EEF9;color:#6B3FA0">Coach</span></div>
+    <div class="member-card"><div class="avatar" style="background:#F3EEF9;color:#6B3FA0">JF</div><h4>Jieyan Fan</h4><p>&nbsp;</p><span class="role-badge" style="background:#F3EEF9;color:#6B3FA0">Coach</span></div>
+  </div>
+  <div style="font-size:13px;color:#aaa;text-align:center;margin-bottom:0.5rem;letter-spacing:0.05em;text-transform:uppercase;">Team Members</div>
   <div class="members-grid">
     <div class="member-card"><div class="avatar" style="background:#FAECE7;color:#993C1D">VZ</div><h4>Victor Zhang</h4><p>&nbsp;</p><span class="role-badge" style="background:#FAECE7;color:#993C1D">Member</span></div>
     <div class="member-card"><div class="avatar" style="background:#E6F1FB;color:#185FA5">AF</div><h4>Austin Fan</h4><p>&nbsp;</p><span class="role-badge" style="background:#E6F1FB;color:#185FA5">Member</span></div>
@@ -137,7 +145,7 @@
         <span class="year-tag">Season 2: Unearthed</span>
       </div>
       <div style="display:flex;gap:1.5rem;align-items:flex-start;">
-        <img src="images/outreach-scrimmage-s2.jpg" alt="Scrimmage — Season 2: Unearthed poster" style="width:160px;border-radius:8px;flex-shrink:0;object-fit:cover;">
+        <img src="images/screammage.png" alt="Screammage — Season 2: Unearthed" style="width:160px;border-radius:8px;flex-shrink:0;object-fit:cover;">
         <p style="font-size:15px;color:#555;line-height:1.7;">We hosted the Screammage — Season 2: Unearthed — a Halloween-themed practice competition held on October 26, 2025 at 350 Showers Dr, Mountain View. A robot game only event we organized to help teams sharpen their skills ahead of the season.</p>
       </div>
     </div>
@@ -161,6 +169,603 @@
     <p style="font-size:15px;color:#555;margin-bottom:1.5rem;">Have a question, want to sponsor us, or just want to say hi? We'd love to hear from you.</p>
     <a href="/cdn-cgi/l/email-protection#a9cac6c7ddc8cadde9cfc5c8c4cccbc6ddda87c6dbce" style="display:inline-block;background:#D85A30;color:#fff;padding:13px 30px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;transition:background 0.2s;"><span class="__cf_email__" data-cfemail="42212d2c3623213602242e232f27202d36316c2d3025">[email&#160;protected]</span></a>
   </div>
+</section>
+
+<section id="unearthed">
+  <div class="section-title">Season 2: Unearthed</div>
+  <div class="section-sub">Our robot, innovation project, and core values for the 2025–2026 season</div>
+
+  <div class="top-tabs">
+    <button class="top-tab-btn active" data-group="s2" onclick="showTop('s2','s2-robot',this)">Robot Design</button>
+    <button class="top-tab-btn" data-group="s2" onclick="showTop('s2','s2-innovation',this)">Innovation Project</button>
+    <button class="top-tab-btn" data-group="s2" onclick="showTop('s2','s2-corevalues',this)">Core Values</button>
+    <button class="top-tab-btn" data-group="s2" onclick="showTop('s2','s2-competition',this)">Competition</button>
+  </div>
+
+  <!-- ═══ ROBOT DESIGN TAB ═══ -->
+  <div id="s2-robot" class="top-tab-panel active" data-group="s2">
+    <div class="sub-tabs">
+      <button class="sub-tab-btn active" data-group="rd" onclick="showSub('rd','rd-overview',this)">Overview</button>
+      <button class="sub-tab-btn" data-group="rd" onclick="showSub('rd','rd-runs',this)">Run Strategy</button>
+      <button class="sub-tab-btn" data-group="rd" onclick="showSub('rd','rd-attachments',this)">Attachments</button>
+    </div>
+
+    <!-- Robot: Overview -->
+    <div id="rd-overview" class="sub-tab-panel active" data-group="rd">
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.5rem 2rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+          <img src="images/pybricks-logo.png" alt="PyBricks logo" style="width:32px;height:32px;border-radius:6px;object-fit:cover;">
+          <p style="font-size:13px;color:#D85A30;font-weight:500;">LEGO SPIKE Prime &nbsp;·&nbsp; PyBricks &nbsp;·&nbsp; Projekt Alpha Drive Base</p>
+        </div>
+        <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+          <img src="images/robot-base.png" alt="Projekt Alpha drive base — front and back view" style="flex:1;min-width:240px;max-width:340px;border-radius:12px;object-fit:contain;background:#fff;padding:0.75rem;">
+          <div style="flex:2;min-width:260px;">
+            <p style="font-size:15px;color:#555;line-height:1.7;">Our Season 2 robot is built on the <strong>Projekt Alpha drive base</strong> by NxtGen Robotics. After Season 1's bulky robot suffered wheel slippage and navigation drift from battery-dependent SPIKE coding, we completely redesigned from the ground up.</p>
+            <ul style="font-size:15px;color:#555;line-height:1.9;margin-top:0.75rem;padding-left:1.25rem;">
+              <li><strong>Drive base:</strong> Compact enclosed body — rubber driving wheels for grip, plastic non-drive wheels for straight tracking, low center of gravity to prevent getting stuck</li>
+              <li><strong>Quick-swap attachments:</strong> Standardized mount allows fast mission transitions with no lost seconds</li>
+              <li><strong>PyBricks:</strong> Gyro-based navigation eliminates battery-level drift; true multi-tasking support; works in both Python and block coding</li>
+              <li><strong>Motor reset:</strong> Each run resets the arm to a physical stop and squares the base against the rear wall — identical starting position every time</li>
+              <li><strong>Accurate turns:</strong> Custom turn function runs both wheels in the same direction to compensate gear backlash, critical for Mission 4's precision recovery angle</li>
+            </ul>
+            <p style="font-size:14px;color:#888;margin-top:1rem;">Best score: <strong style="color:#D85A30;">530 pts</strong> &nbsp;·&nbsp; 7 runs &nbsp;·&nbsp; ~86% success rate &nbsp;·&nbsp; 145s total run time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Robot: Run Strategy -->
+    <div id="rd-runs" class="sub-tab-panel" data-group="rd">
+      <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.5rem;">We planned 7 runs, each owned by one team member. Routes were carefully designed to minimize travel distance and number of turns. After the qualifier we reordered runs, prioritized reliable ones first, and added Missions 11 &amp; 15 to the regional plan. Total run time: 107.9s at ~86% success rate.</p>
+      <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 1</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: William &nbsp;·&nbsp; Best Score: 90 pts &nbsp;·&nbsp; Time: 12.3s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 7.32</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Heavy Lifting <span style="color:#888;">(30 pts)</span> · Who Lived Here? <span style="color:#888;">(30 pts)</span> · Forge <span style="color:#888;">(30 pts)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 2</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: Andy &nbsp;·&nbsp; Best Score: 30 pts &nbsp;·&nbsp; Time: 9.9s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 3.03</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Silo <span style="color:#888;">(30 pts)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 3</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Best Score: 60 pts &nbsp;·&nbsp; Time: 15s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 2.0</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">What's on Sale? <span style="color:#888;">(30 pts)</span> · Tip the Scales <span style="color:#888;">(30 pts)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 4</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: Austin &nbsp;·&nbsp; Best Score: 45 pts &nbsp;·&nbsp; Time: 11.4s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 3.95</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Statue Rebuild <span style="color:#888;">(30 pts)</span> · Forum — deliver pan, millstone &amp; forge blocks <span style="color:#888;">(15 pts)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 5</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: Archer &nbsp;·&nbsp; Best Score: 70 pts &nbsp;·&nbsp; Time: 15.7s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 2.55</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Salvage Operation <span style="color:#888;">(30 pts)</span> · Site Marking <span style="color:#888;">(10 pts)</span> · Angular Artifacts <span style="color:#888;">(30 pts)</span> <span style="color:#D85A30;font-size:12px;font-weight:600;">NEW (Regional)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 6</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: Victor &nbsp;·&nbsp; Best Score: 60 pts &nbsp;·&nbsp; Time: 12.6s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 4.76</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Surface Brushing <span style="color:#888;">(30 pts)</span> · Map Reveal <span style="color:#888;">(30 pts)</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div><span style="font-weight:700;font-size:16px;">Run 7</span> <span style="color:#888;font-size:14px;margin-left:0.5rem;">Owner: Austin &nbsp;·&nbsp; Best Score: 95+ pts &nbsp;·&nbsp; Time: 28s</span></div>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;">Score Density: 2.5</span>
+          </div>
+          <p style="font-size:14px;color:#555;margin-bottom:0.75rem;">Mineshaft Explorer <span style="color:#888;">(30 pts)</span> · Careful Recovery <span style="color:#888;">(40 pts)</span> · Forum — deliver brush, topsoil &amp; artifact <span style="color:#888;">(15 pts)</span> <span style="color:#888;font-size:12px;">*+10 if opponent sends minecart over</span></p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">📷</span>Attachment photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:120px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Robot: Attachments -->
+    <div id="rd-attachments" class="sub-tab-panel" data-group="rd">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;">
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Surface Brush / Map Reveal</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Run 6</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 1 &amp; 2</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">Original design used angled pieces and rubber bands. New design leaves a wedge on the mat and uses a flat plate to sweep deposits — saves ~5 seconds per run.</p>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Heavy Lifting / Who Lived Here / Forge</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Run 1</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 5, 6 &amp; 7</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">4 full design iterations — Ver 1 → Ver 2 Scrimmage → Ver 3 Qualifier → Ver 4 Regional — refining geometry and reliability at each competition stage.</p>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Silo / What's on Sale / Tip the Scales</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Runs 2 &amp; 3</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 8, 9 &amp; 10 — shared attachment</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">One attachment handles three missions across two runs. Mission 9 (Market Stall Roof): redesigned from side-pull to a long hook arm lifting from the back center — balanced force, much higher success rate.</p>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Statue Rebuild / Forum Delivery</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Run 4</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 13 &amp; 14 (pan, millstone &amp; forge blocks)</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">Handles the Statue Rebuild and delivers pan, millstone, and forge blocks to the Forum in a single run.</p>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Salvage / Angular Artifacts / Site Marking</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Run 5</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 11, 12 &amp; 15</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">Redesigned after qualifiers to add Mission 11: long bar with 5-gear rotate-and-lift mechanism plus a wider push plate. Previously couldn't reach Mission 11 at all.</p>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-weight:600;">Mineshaft / Careful Recovery / Forum</div>
+            <span style="background:#E6F1FB;color:#185FA5;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;">Run 7</span>
+          </div>
+          <p style="font-size:12px;color:#aaa;margin-bottom:0.5rem;">Missions 3, 4 &amp; 14 (brush, topsoil &amp; artifact)</p>
+          <div class="placeholder-box" style="height:160px;margin-bottom:0.75rem;"><span class="ph-icon">📷</span>Photo coming soon</div>
+          <p style="font-size:13px;color:#777;line-height:1.5;">Highest-scoring run at 95+ pts. Mission 4 (Careful Recovery) requires a custom precision turn function to compensate gear backlash — two wheels turn in the same direction for accurate angle control.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /s2-robot -->
+
+  <!-- ═══ INNOVATION PROJECT TAB ═══ -->
+  <div id="s2-innovation" class="top-tab-panel" data-group="s2">
+    <div class="sub-tabs">
+      <button class="sub-tab-btn active" data-group="ip" onclick="showSub('ip','ip-problem',this)">Problem Statement</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-research',this)">Research</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-interviews',this)">Interviews</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-arm1',this)">Human-Shaped Arm</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-arm2',this)">Octopus Arm</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-arm3',this)">AI Robot Arm</button>
+      <button class="sub-tab-btn" data-group="ip" onclick="showSub('ip','ip-solution',this)">Final Solution</button>
+    </div>
+
+    <!-- Problem Statement -->
+    <div id="ip-problem" class="sub-tab-panel active" data-group="ip">
+      <div style="text-align:center;padding:2rem 1rem 1.5rem;">
+        <div style="font-size:13px;color:#D85A30;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.75rem;">Our Problem Statement</div>
+        <div style="font-size:32px;font-weight:700;line-height:1.3;max-width:700px;margin:0 auto 2rem;">How can we <span style="color:#D85A30;">safely explore</span> inaccessible archaeology sites without destroying them?</div>
+      </div>
+      <div style="background:#FAECE7;border-radius:12px;padding:1.5rem 2rem;margin-bottom:1.25rem;">
+        <div style="font-weight:600;font-size:16px;margin-bottom:0.75rem;">The Inspiration</div>
+        <p style="font-size:15px;color:#555;line-height:1.7;">Our team was inspired by a visit to Emperor Qin Shi Huang's (秦始皇) Terracotta Army and his tomb. We learned that the tomb itself has never been opened — it contains dangerously high concentrations of mercury. This sparked our question: how many more historic sites around the world are simply too dangerous or inaccessible to explore?</p>
+      </div>
+      <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:1.5rem 2rem;margin-bottom:1.25rem;">
+        <div style="font-weight:600;font-size:16px;margin-bottom:1rem;">The Challenge: Inaccessible &amp; Unsafe Sites</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
+          <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem 1rem;font-size:14px;color:#555;">⚠️ <strong>Structural hazards</strong> — collapsing walls, unstable platforms (e.g. Jiankou section of the Great Wall)</div>
+          <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem 1rem;font-size:14px;color:#555;">☠️ <strong>Atmospheric dangers</strong> — toxic gases, mercury (e.g. Qin Shi Huang's tomb)</div>
+          <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem 1rem;font-size:14px;color:#555;">🧪 <strong>Biological &amp; chemical hazards</strong> — mold, pathogens, chemical contamination</div>
+          <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem 1rem;font-size:14px;color:#555;">💣 <strong>Physical &amp; logistical barriers</strong> — landmines (Sudanese temples), war zones (20,000+ Middle East sites)</div>
+        </div>
+      </div>
+      <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:1.25rem 1.5rem;">
+        <p style="font-size:15px;color:#555;line-height:1.7;font-weight:500;">And even when excavation is possible — <strong>invasive digging destroys the site at the same time.</strong> We need a better way.</p>
+      </div>
+    </div>
+
+    <!-- Research -->
+    <div id="ip-research" class="sub-tab-panel" data-group="ip">
+      <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.5rem;">Austin and Archer led our initial research into archaeology pain points. We consulted webinars, books, and websites to understand the full scope of the problem and existing technologies.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-bottom:1.5rem;">
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.75rem;">📺 Webinars</div>
+          <ul style="font-size:14px;color:#555;line-height:1.8;padding-left:1.1rem;">
+            <li>Ask an Archaeologist Q&amp;A with Dr. Sarah Kansa</li>
+            <li>Exploring Archaeological Challenges — FLL UNEARTHED Robotics Teams</li>
+            <li>Ask an Archaeologist: Tech Edition</li>
+            <li>Ask an Archaeologist: Unearthing Challenges in Archaeology</li>
+          </ul>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.75rem;">📚 Books</div>
+          <ul style="font-size:14px;color:#555;line-height:1.8;padding-left:1.1rem;">
+            <li><em>Archaeology for Kids</em> — Richard Panchyk</li>
+            <li><em>Archaeology: The Study of Our Past</em> — Nicole F. Smith</li>
+            <li><em>Dig Deep: Connecting Archaeology, Oceans and Us</em> — Paul Devereux</li>
+          </ul>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.75rem;">🌐 Key Resources</div>
+          <ul style="font-size:14px;color:#555;line-height:1.8;padding-left:1.1rem;">
+            <li>Society for American Archaeology (saa.org)</li>
+            <li>Archaeological Institute of America</li>
+            <li>UNESCO Danger List</li>
+            <li>Unitree 4D LiDAR L2 documentation</li>
+            <li>SpiRobs shape-shifting robot paper</li>
+          </ul>
+        </div>
+      </div>
+      <div style="background:#FAECE7;border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="font-weight:600;font-size:15px;margin-bottom:0.5rem;">Key Finding</div>
+        <p style="font-size:15px;color:#555;line-height:1.7;">Over <strong>20,000 archaeology sites</strong> in the Middle East and North Africa are inaccessible due to war. Over <strong>500 sites in Ukraine</strong> are damaged. Cave sites like parts of the Grand Canyon are unreachable due to flash floods and steep cliffs. The problem is global and urgent.</p>
+      </div>
+    </div>
+
+    <!-- Interviews -->
+    <div id="ip-interviews" class="sub-tab-panel" data-group="ip">
+      <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.5rem;">We reached out to four professional archaeologists and geology experts for feedback on our idea. Their insights directly shaped our final design.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-bottom:1.5rem;">
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.25rem;">John Rick</div>
+          <div style="font-size:13px;color:#D85A30;margin-bottom:0.75rem;">Associate Professor of Anthropology, Stanford University</div>
+          <p style="font-size:13px;color:#555;line-height:1.6;">Provided foundational perspective on the challenges archaeologists face in the field and the limitations of current tools.</p>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.25rem;">Ervan Garrison</div>
+          <div style="font-size:13px;color:#D85A30;margin-bottom:0.75rem;">Professor Emeritus of Archaeological Geology &amp; Geophysics, University of Georgia</div>
+          <p style="font-size:13px;color:#555;line-height:1.6;">Offered expertise on geophysical surveying and non-invasive archaeological methods.</p>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.25rem;">Katie Chin-Quee</div>
+          <div style="font-size:13px;color:#D85A30;margin-bottom:0.75rem;">Museum &amp; Heritage Sector, Collections Care &amp; Public Engagement, Durham University, UK</div>
+          <p style="font-size:13px;color:#555;line-height:1.6;">Shared the perspective of museum professionals and conservators on artifact handling and preservation.</p>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:0.25rem;">Shelby Medina</div>
+          <div style="font-size:13px;color:#D85A30;margin-bottom:0.75rem;">Anthropology, UC Berkeley</div>
+          <p style="font-size:13px;color:#555;line-height:1.6;">Called our idea "innovative" and "cutting edge." Key concerns raised: waterproofing for field conditions, and weak wireless signal underground.</p>
+        </div>
+      </div>
+      <div style="background:#EAF3DE;border:1px solid #b5d98a;border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="font-weight:600;font-size:15px;margin-bottom:0.5rem;">What We Learned</div>
+        <ul style="font-size:14px;color:#555;line-height:1.9;padding-left:1.1rem;">
+          <li>Robot use in archaeology is considered <strong>cutting edge</strong> by professionals</li>
+          <li>The rover needs to be <strong>waterproof</strong> for real field conditions</li>
+          <li>Wireless signal is <strong>too weak underground</strong> — our AI arm iteration directly addresses this by operating autonomously without a signal</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Arm: Human-Shaped -->
+    <div id="ip-arm1" class="sub-tab-panel" data-group="ip">
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="images/ip-human-arm.png" alt="Human-shaped gesture robotic arm" style="flex:1;min-width:240px;max-width:340px;border-radius:12px;object-fit:contain;background:#f9f9f9;padding:0.75rem;">
+        <div style="flex:2;min-width:260px;">
+          <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:0.5rem;">Arm Iteration 1</div>
+          <h3 style="font-size:22px;font-weight:700;margin-bottom:1rem;">Human-Shaped Robotic Arm</h3>
+          <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1rem;">A gesture-manipulation arm that mirrors the operator's hand movements in real time — inspired by the Da Vinci Robotic Surgical System used in minimally invasive surgery.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+            <div style="background:#EAF3DE;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#3B6D11;margin-bottom:0.3rem;">✓ Pros</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Follows hand gestures intuitively</li>
+                <li>Precise movement and gentle touch</li>
+                <li>Force and haptic feedback possible</li>
+                <li>Good for regularly shaped objects</li>
+              </ul>
+            </div>
+            <div style="background:#FAECE7;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#993C1D;margin-bottom:0.3rem;">✗ Cons</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Requires very precise positioning</li>
+                <li>Can only grab small objects</li>
+                <li>Not flexible for irregular shapes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="placeholder-box" style="height:120px;margin-top:1.25rem;"><span class="ph-icon">▶</span>Video coming soon</div>
+    </div>
+
+    <!-- Arm: Octopus -->
+    <div id="ip-arm2" class="sub-tab-panel" data-group="ip">
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="images/ip-octopus-arm.png" alt="Octopus-shaped TPU robotic arm" style="flex:1;min-width:240px;max-width:340px;border-radius:12px;object-fit:contain;background:#f9f9f9;padding:0.75rem;">
+        <div style="flex:2;min-width:260px;">
+          <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:0.5rem;">Arm Iteration 2</div>
+          <h3 style="font-size:22px;font-weight:700;margin-bottom:1rem;">Octopus-Shaped Robotic Arm</h3>
+          <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:0.75rem;">Inspired by the SpiRobs research paper, this arm mimics an octopus tentacle — 3D-printed in flexible TPU material, controlled by two Kevlar cords that bend it left and right.</p>
+          <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1rem;">Key engineering decisions: PLA was too rigid and broke easily → switched to <strong>TPU</strong> (flexible and durable). Regular sewing thread wasn't strong enough → switched to <strong>Kevlar cord</strong> (high strength, low stretch). A rigid extruding base extends the arm's reach and prevents objects from hitting the rover body.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div style="background:#EAF3DE;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#3B6D11;margin-bottom:0.3rem;">✓ Pros</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Bends around irregular shapes</li>
+                <li>Good for round or oddly shaped objects</li>
+                <li>Flexible — won't damage fragile artifacts</li>
+              </ul>
+            </div>
+            <div style="background:#FAECE7;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#993C1D;margin-bottom:0.3rem;">✗ Cons</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Must be positioned very accurately</li>
+                <li>Requires wireless signal to operate</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="placeholder-box" style="height:120px;margin-top:1.25rem;"><span class="ph-icon">▶</span>Video coming soon</div>
+    </div>
+
+    <!-- Arm: AI -->
+    <div id="ip-arm3" class="sub-tab-panel" data-group="ip">
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="images/ip-ai-arm.png" alt="LeRobot SO-101 AI robot arm" style="flex:1;min-width:240px;max-width:340px;border-radius:12px;object-fit:contain;background:#f9f9f9;padding:0.75rem;">
+        <div style="flex:2;min-width:260px;">
+          <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:0.5rem;">Arm Iteration 3</div>
+          <h3 style="font-size:22px;font-weight:700;margin-bottom:1rem;">AI-Controlled Robot Arm</h3>
+          <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:0.75rem;">After learning from robot expert <strong>Hao Li</strong>, we adopted the open-source <strong>LeRobot SO-101</strong> arm. Andy proposed and Andy &amp; Austin set up the arms and trained the AI models.</p>
+          <ul style="font-size:15px;color:#555;line-height:1.9;padding-left:1.25rem;margin-bottom:1rem;">
+            <li>Collected <strong>400 episodes</strong> of teleoperation training data</li>
+            <li>Data hosted on <strong>HuggingFace</strong> (huggingface.co/fanaustinca) and shared with the AI/ML community</li>
+            <li>Trained two models: <strong>ACT (Action Chunking Transformers)</strong> and <strong>Diffusion Policy</strong></li>
+            <li>Results: ACT 150 episodes performed best; Diffusion 400 episodes underperformed</li>
+            <li>Controlled using <strong>Claude + Gemini</strong> LLMs via camera feed — made a control panel using Claude Code</li>
+          </ul>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div style="background:#EAF3DE;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#3B6D11;margin-bottom:0.3rem;">✓ Pros</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Fully autonomous — no signal needed</li>
+                <li>Solves the underground signal problem</li>
+              </ul>
+            </div>
+            <div style="background:#FAECE7;border-radius:8px;padding:0.75rem;">
+              <div style="font-size:12px;font-weight:600;color:#993C1D;margin-bottom:0.3rem;">✗ Cons</div>
+              <ul style="font-size:13px;color:#555;line-height:1.7;padding-left:1rem;">
+                <li>Slow — 2 min to pick up one brick</li>
+                <li>Camera jitter and blind spots</li>
+                <li>Can only grab small objects</li>
+                <li>Not easily moved once set up</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="placeholder-box" style="height:120px;margin-top:1.25rem;"><span class="ph-icon">▶</span>Video coming soon</div>
+
+      <div style="background:#E6F1FB;border-radius:12px;padding:1.5rem 2rem;margin-top:1.5rem;">
+        <div style="font-size:12px;color:#185FA5;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:0.5rem;">After Regionals — Next Iteration</div>
+        <h4 style="font-size:18px;font-weight:700;margin-bottom:1rem;">Computer Vision + Inverse Kinematics</h4>
+        <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.25rem;">Instead of training on teleoperation data, we developed a fully analytical pipeline — no machine learning required for the motion itself:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;">
+          <div style="background:#fff;border-radius:10px;padding:1rem 1.25rem;">
+            <div style="font-weight:600;font-size:14px;margin-bottom:0.5rem;">Step 1 — 3D Localization</div>
+            <p style="font-size:13px;color:#555;line-height:1.6;">An image processing model analyzes the camera feed to detect artifacts. Stereo triangulation from two camera viewpoints calculates the artifact's exact position in 3D space.</p>
+          </div>
+          <div style="background:#fff;border-radius:10px;padding:1rem 1.25rem;">
+            <div style="font-weight:600;font-size:14px;margin-bottom:0.5rem;">Step 2 — Inverse Kinematics</div>
+            <p style="font-size:13px;color:#555;line-height:1.6;">Given the target 3D coordinates, inverse kinematics solves the joint angles needed to position the end-effector precisely — eliminating the need for thousands of training episodes.</p>
+          </div>
+        </div>
+        <div class="placeholder-box" style="height:120px;margin-top:1rem;"><span class="ph-icon">▶</span>Demo video coming soon</div>
+      </div>
+    </div>
+
+    <!-- Final Solution -->
+    <div id="ip-solution" class="sub-tab-panel" data-group="ip">
+      <div style="text-align:center;padding:1rem 1rem 1.5rem;">
+        <div style="font-size:13px;color:#D85A30;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;">Our Solution</div>
+        <div style="font-size:28px;font-weight:700;margin-bottom:0.25rem;">Relic Rover — History Recover</div>
+        <div style="font-size:15px;color:#666;">A remote-controlled rover that safely explores inaccessible archaeology sites</div>
+      </div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.25rem;">
+        <img src="images/ip-final-solution.png" alt="Relic Rover final solution — LiDAR, Camera, Octopus Arm, Rover Car" style="flex:1;min-width:260px;max-width:380px;border-radius:12px;object-fit:contain;background:#f9f9f9;padding:0.75rem;">
+        <div style="flex:2;min-width:260px;">
+          <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1rem;">The Relic Rover combines a wheeled rover with three sensor and manipulation systems to explore sites safely without damaging them:</p>
+          <ul style="font-size:15px;color:#555;line-height:1.9;padding-left:1.25rem;">
+            <li><strong>Unitree 4D LiDAR sensor</strong> — creates a 3D map of the site without physical contact</li>
+            <li><strong>Camera</strong> — provides visual inspection for remote operators</li>
+            <li><strong>3D-printed TPU Octopus Arm</strong> — wraps gently around fragile artifacts of any shape using Kevlar cords</li>
+            <li><strong>AI-controlled robot arm (LeRobot SO-101)</strong> — operates autonomously underground where wireless signal is too weak</li>
+          </ul>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;">
+            <span style="background:#FAECE7;color:#993C1D;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;">Non-invasive</span>
+            <span style="background:#E6F1FB;color:#185FA5;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;">AI-powered</span>
+            <span style="background:#EAF3DE;color:#3B6D11;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;">LiDAR mapping</span>
+            <span style="background:#EEEDFE;color:#534AB7;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;">Open-source data</span>
+          </div>
+        </div>
+      </div>
+      <div class="placeholder-box" style="height:180px;margin-bottom:1.25rem;"><span class="ph-icon">▶</span>Video coming soon</div>
+      <div style="background:#EAF3DE;border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="font-weight:600;font-size:15px;margin-bottom:0.5rem;">Our Impact</div>
+        <p style="font-size:15px;color:#555;line-height:1.7;">The Relic Rover enables safe, cost-efficient, non-invasive exploration of dangerous or inaccessible archaeology sites — protecting both researchers and irreplaceable history. We shared our project at the Bay Area Screammage, with FLL teams in Arizona, and at the FLL Spring League. Our 400-episode training dataset is publicly available on HuggingFace for the global AI/ML community.</p>
+      </div>
+    </div>
+
+  </div><!-- /s2-innovation -->
+
+  <!-- ═══ CORE VALUES TAB ═══ -->
+  <div id="s2-corevalues" class="top-tab-panel" data-group="s2">
+    <div style="margin-bottom:1.5rem;background:#FAECE7;border-radius:12px;padding:1.5rem 2rem;">
+      <p style="font-size:15px;color:#555;line-height:1.7;">Core Values are the foundation of everything we do at FIRST LEGO League. They shape how we work together, treat each other, and approach every challenge — on and off the competition floor.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;">
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">🔍</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Discovery</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We explore new skills and ideas. From testing 9 different innovation concepts to learning how to train AI models, we embrace the unknown and follow our curiosity wherever it leads.</p>
+      </div>
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">💡</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Innovation</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We use creativity and persistence to solve problems. Our Relic Rover went through multiple arm iterations, 4 attachment design versions, and countless coding improvements — innovation is never a single step.</p>
+      </div>
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">🌍</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Impact</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We apply what we learn to improve our world. We shared our project with teams in Arizona, hosted Screammage events for 12+ teams, and published our AI training data publicly on HuggingFace to benefit the wider community.</p>
+      </div>
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">🤝</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Inclusion</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We respect each other and embrace our differences. Every team member owned their own runs and contributed to both the robot and the innovation project — everyone's voice counts.</p>
+      </div>
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">⚙️</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Teamwork</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We accomplish more together. Andy and Austin both trained the AI arm. Archer and Victor integrated LiDAR and camera together. William built the rover while Austin attached the first arm. Our best ideas came from collaboration.</p>
+      </div>
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:28px;margin-bottom:0.5rem;">😄</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:0.4rem;">Fun</div>
+        <p style="font-size:13px;color:#555;line-height:1.6;">We celebrate what makes our team unique. From Halloween-themed Screammage events to dressing up on competition day, we make sure the journey is as rewarding as the destination.</p>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;background:#fff;border:1px solid #eee;border-radius:12px;padding:1.5rem 2rem;">
+      <div style="font-weight:600;font-size:16px;margin-bottom:0.75rem;">Gracious Professionalism &amp; Coopetition</div>
+      <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.25rem;">We competed hard but helped others at the same time. That's what Gracious Professionalism means to us.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div style="font-weight:600;font-size:15px;">Screammage — Season 2: Unearthed</div>
+            <span class="year-tag" style="font-size:12px;">Oct 26, 2025 · Mountain View</span>
+          </div>
+          <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:0.75rem;">We co-hosted the Bay Area FLL Screammage — a Halloween-themed practice competition at 350 Showers Dr, Mountain View. <strong>12 teams competed</strong> in a robot-game-only event we organized to help teams sharpen their skills before the real season. We also demonstrated our innovation project to all attending teams.</p>
+          <img src="images/screammage.png" alt="Screammage — Season 2: Unearthed" style="width:100%;border-radius:8px;object-fit:cover;max-height:220px;">
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div style="font-weight:600;font-size:15px;">Sharing with FLL Teams in Arizona</div>
+            <span class="year-tag" style="font-size:12px;">After Qualification</span>
+          </div>
+          <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:0.75rem;">After our qualifier, we connected virtually with FLL teams in Arizona to share our Relic Rover innovation project and robot design. We presented our solution iterations, answered questions, and exchanged ideas with teams from across the country — embodying the spirit of coopetition.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <img src="images/arizona-sharing-2.png" alt="Presenting background research to Arizona teams" style="width:100%;border-radius:8px;object-fit:cover;max-height:160px;">
+            <img src="images/arizona-sharing-1.png" alt="Sharing solution iterations with Arizona teams" style="width:100%;border-radius:8px;object-fit:cover;max-height:160px;">
+          </div>
+        </div>
+
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+            <div style="font-weight:600;font-size:15px;">FLL Spring League — Season 2: Unearthed</div>
+            <span class="year-tag" style="font-size:12px;">Season 2: Unearthed</span>
+          </div>
+          <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:0.75rem;">We hosted a Spring League game event where we demonstrated our innovation project and robot to other FLL teams, helped them understand game strategies, and gave them a chance to practice on the real Unearthed game mat. Giving back to the community that helped us grow.</p>
+          <div style="display:flex;gap:0.75rem;">
+            <div class="placeholder-box" style="flex:1;height:100px;"><span class="ph-icon">📷</span>Photo coming soon</div>
+            <div class="placeholder-box" style="flex:1;height:100px;"><span class="ph-icon">▶</span>Video coming soon</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div style="margin-top:1.25rem;">
+      <div class="placeholder-box" style="height:160px;border-radius:12px;"><span class="ph-icon">📷</span>Team photo — Core Values presentation coming soon</div>
+    </div>
+  </div><!-- /s2-corevalues -->
+
+  <!-- ═══ COMPETITION TAB ═══ -->
+  <div id="s2-competition" class="top-tab-panel" data-group="s2">
+    <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:2rem;">Full match footage from our three competition events this season. Videos coming soon — check back after we upload to YouTube.</p>
+
+    <div style="display:flex;flex-direction:column;gap:1.75rem;">
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <div style="font-weight:600;font-size:16px;">Screammage</div>
+          <span class="year-tag">Oct 26, 2025</span>
+        </div>
+        <p style="font-size:13px;color:#888;margin-bottom:1rem;">Halloween-themed practice competition we hosted at 350 Showers Dr, Mountain View — robot game only.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 1</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 2</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 3</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+        </div>
+      </div>
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <div style="font-weight:600;font-size:16px;">Qualifier</div>
+          <span class="year-tag">2025</span>
+        </div>
+        <p style="font-size:13px;color:#888;margin-bottom:1rem;">Regional qualifier — robot game, robot design judging, and innovation project presentation.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 1</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 2</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 3</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+        </div>
+      </div>
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <div style="font-weight:600;font-size:16px;">Regional Championship</div>
+          <span class="year-tag">2026</span>
+        </div>
+        <p style="font-size:13px;color:#888;margin-bottom:1rem;">Northern California Regional Championship — where we earned Champion's Award 3rd Place and Robot Design Award.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 1</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 2</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+          <div><div style="font-size:12px;color:#aaa;margin-bottom:0.4rem;font-weight:500;">Run 3</div><div class="placeholder-box" style="height:140px;"><span class="ph-icon">▶</span>Video coming soon</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /s2-competition -->
+
 </section>
 
 <footer>Flame Bots #67092 &middot; FIRST LEGO League &middot; Built with fire and code</footer>
