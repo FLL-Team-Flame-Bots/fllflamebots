@@ -27,7 +27,7 @@
     <li><a onclick="show('members',this);document.querySelector('.nav-links').classList.remove('open')">Members</a></li>
     <li><a onclick="show('awards',this);document.querySelector('.nav-links').classList.remove('open')">Awards</a></li>
     <li><a onclick="show('outreach',this);document.querySelector('.nav-links').classList.remove('open')">Outreach</a></li>
-    <li><a onclick="show('ar-game',this);document.querySelector('.nav-links').classList.remove('open')">AR Game</a></li>
+    <li><a onclick="show('games',this);document.querySelector('.nav-links').classList.remove('open')">Games</a></li>
     <li><a onclick="show('contact',this);document.querySelector('.nav-links').classList.remove('open')">Contact</a></li>
   </ul>
 </nav>
@@ -161,60 +161,68 @@
   </div>
 </section>
 
-<section id="ar-game">
-  <div class="section-title">AR Game</div>
-  <div class="section-sub">Try Archeo — our augmented reality archaeology game</div>
-  <div class="mission-block">
-    We built Archeo, an augmented reality archaeology game where you hunt for fossils and ancient artifacts hidden in the real world around you. Collect discoveries, learn about what you find, upgrade your rank, and compete to top the global leaderboard — no app download required.
+<section id="games">
+  <div class="section-title">Games</div>
+  <div class="section-sub">Games built by the Flame Bots</div>
+
+  <div class="top-tabs">
+    <button class="top-tab-btn active" data-group="games" onclick="showTop('games','game-archeo',this)">Archeo</button>
   </div>
 
-  <div style="margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem;">
-
-    <div style="background:#FAECE7;border:1px solid #f0c4b0;border-radius:12px;padding:2rem;text-align:center;">
-      <div style="font-size:48px;margin-bottom:1rem;">🦕</div>
-      <h3 style="font-size:20px;font-weight:700;margin-bottom:0.5rem;">Archeo</h3>
-      <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.5rem;">Works on any Android or Samsung device that supports <strong>ARCore</strong>. Open it in Chrome on your phone and hit Play — no install needed.</p>
-      <a href="https://ar.flamebots.org" target="_blank" style="display:inline-block;background:#D85A30;color:#fff;padding:13px 30px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;transition:background 0.2s;">Play Archeo on Android →</a>
+  <div class="top-tab-panel active" id="game-archeo" data-group="games">
+    <div class="mission-block">
+      We built Archeo, an augmented reality archaeology game where you hunt for fossils and ancient artifacts hidden in the real world around you. Collect discoveries, learn about what you find, upgrade your rank, and compete to top the global leaderboard — no app download required.
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
-      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
-        <div style="font-size:32px;margin-bottom:0.5rem;">🪨</div>
-        <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Collect Fossils & Artifacts</div>
-        <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Discover fossils and ancient artifacts in AR — and learn about each one you find.</p>
-      </div>
-      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
-        <div style="font-size:32px;margin-bottom:0.5rem;">⬆️</div>
-        <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Upgrade Your Rank</div>
-        <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Earn XP from your finds and climb from Novice to Master Archaeologist.</p>
-      </div>
-      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
-        <div style="font-size:32px;margin-bottom:0.5rem;">🏆</div>
-        <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Leaderboard</div>
-        <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Compete with players worldwide and see if you can reach the top.</p>
-      </div>
-    </div>
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
 
-    <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:1.5rem 2rem;display:flex;align-items:center;gap:1.25rem;">
-      <div style="font-size:36px;flex-shrink:0;">🍎</div>
-      <div>
-        <div style="font-size:16px;font-weight:600;margin-bottom:0.25rem;">iOS — Coming Soon</div>
-        <p style="font-size:14px;color:#888;margin:0;line-height:1.6;">We're working on an iPhone and iPad version. Stay tuned!</p>
+      <div style="background:#FAECE7;border:1px solid #f0c4b0;border-radius:12px;padding:2rem;text-align:center;">
+        <div style="font-size:48px;margin-bottom:1rem;">🦕</div>
+        <h3 style="font-size:20px;font-weight:700;margin-bottom:0.5rem;">Archeo</h3>
+        <p style="font-size:15px;color:#555;line-height:1.7;margin-bottom:1.5rem;">Works on any Android or Samsung device that supports <strong>ARCore</strong>. Open it in Chrome on your phone and hit Play — no install needed.</p>
+        <a href="https://ar.flamebots.org" target="_blank" style="display:inline-block;background:#D85A30;color:#fff;padding:13px 30px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;transition:background 0.2s;">Play Archeo on Android →</a>
       </div>
-      <span style="margin-left:auto;background:#eee;color:#888;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;">Coming Soon</span>
-    </div>
 
-    <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 2rem;">
-      <div style="font-size:13px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem;">Requirements</div>
-      <ul style="font-size:14px;color:#555;line-height:2;margin:0;padding-left:1.25rem;">
-        <li>Android phone or tablet</li>
-        <li>ARCore supported device (<a href="https://developers.google.com/ar/devices" target="_blank" style="color:#D85A30;">check your device →</a>)</li>
-        <li>Chrome browser (latest version)</li>
-        <li>Camera permission enabled</li>
-      </ul>
-    </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
+          <div style="font-size:32px;margin-bottom:0.5rem;">🪨</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Collect Fossils & Artifacts</div>
+          <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Discover fossils and ancient artifacts in AR — and learn about each one you find.</p>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
+          <div style="font-size:32px;margin-bottom:0.5rem;">⬆️</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Upgrade Your Rank</div>
+          <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Earn XP from your finds and climb from Novice to Master Archaeologist.</p>
+        </div>
+        <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem;text-align:center;">
+          <div style="font-size:32px;margin-bottom:0.5rem;">🏆</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:0.25rem;">Leaderboard</div>
+          <p style="font-size:13px;color:#888;margin:0;line-height:1.5;">Compete with players worldwide and see if you can reach the top.</p>
+        </div>
+      </div>
 
+      <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:1.5rem 2rem;display:flex;align-items:center;gap:1.25rem;">
+        <div style="font-size:36px;flex-shrink:0;">🍎</div>
+        <div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:0.25rem;">iOS — Coming Soon</div>
+          <p style="font-size:14px;color:#888;margin:0;line-height:1.6;">We're working on an iPhone and iPad version. Stay tuned!</p>
+        </div>
+        <span style="margin-left:auto;background:#eee;color:#888;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;">Coming Soon</span>
+      </div>
+
+      <div style="background:#f9f9f9;border-radius:12px;padding:1.25rem 2rem;">
+        <div style="font-size:13px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem;">Requirements</div>
+        <ul style="font-size:14px;color:#555;line-height:2;margin:0;padding-left:1.25rem;">
+          <li>Android phone or tablet</li>
+          <li>ARCore supported device (<a href="https://developers.google.com/ar/devices" target="_blank" style="color:#D85A30;">check your device →</a>)</li>
+          <li>Chrome browser (latest version)</li>
+          <li>Camera permission enabled</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
+
 </section>
 
 <section id="contact">
