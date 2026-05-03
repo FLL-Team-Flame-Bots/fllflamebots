@@ -2,10 +2,11 @@ from pybricks.hubs import PrimeHub
 from pybricks.parameters import Axis, Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
-from pybricks.tools import StopWatch, multitask
+from pybricks.tools import StopWatch
 from utility import (
     steer_turn,
     straight_at_speed,
+    turn_at_rate,
     turn_by_wheel,
     turn_to_target,
     compensate_backlash,
@@ -85,6 +86,25 @@ class UnearthedBot:
             distance,
             speed=speed,
             acceleration=acceleration,
+            then=then,
+        )
+
+    async def turn_at_rate(
+        self,
+        angle: int,
+        turn_rate: int = -1,
+        turn_acceleration: int = -1,
+        then=Stop.COAST,
+    ):
+        """
+        Wrapper for the utility function of the same name.
+        Turns the robot for a given angle at a specified rate.
+        """
+        await turn_at_rate(
+            self.drive_base,
+            angle,
+            turn_rate=turn_rate,
+            turn_acceleration=turn_acceleration,
             then=then,
         )
 

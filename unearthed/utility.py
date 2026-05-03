@@ -50,6 +50,29 @@ async def straight_at_speed(
     drive_base.settings(*current_settings)
 
 
+async def turn_at_rate(
+    drive_base: DriveBase, angle: int, turn_rate=-1, turn_acceleration=-1, then=Stop.HOLD
+):
+    """
+    Moves the robot straight for a given distance at a specified speed and acceleration.
+    Afterwards, set speed and acceleration back to their original values.
+
+    Args:
+        drive_base (DriveBase): The drive base object.
+        angle (int): The angle to turn.
+        turn_rate (int, optional): The turn rate. Defaults to -1 (uses current setting).
+        turn_acceleration (int, optional): The turn acceleration. Defaults to -1 (uses current setting).
+        then (Stop, optional): The stop behavior after moving. Defaults to Stop.HOLD.
+    """
+    previous_settings = drive_base.settings()
+    if turn_rate != -1:
+        drive_base.settings(turn_rate=turn_rate)
+    if turn_acceleration != -1:
+        drive_base.settings(turn_acceleration=turn_acceleration)
+    await drive_base.turn(angle, then=then)
+    drive_base.settings(*previous_settings)
+
+
 async def disable_pid(drive_base: DriveBase):
     """Disables the PID control for the robot's heading.
 

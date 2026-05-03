@@ -27,13 +27,17 @@ async def main():
     await bot.steer_turn(target_angle=90, max_wheel_speed=200)
     await bot.straight_at_speed(120, speed=300, acceleration=200)
 
+    async def two_step_raise_arm():
+        await right_motor.run_angle(150, -80, then = Stop.NONE)
+        await right_motor.run_target(300, -250)
+
     async def move_after_release_flag():
         await wait(1000)
         await bot.straight_at_speed(240, speed=300, acceleration=300)
 
     # drop flag
     await multitask(
-        right_motor.run_angle(300, -250),
+        two_step_raise_arm(),
         move_after_release_flag(),
     )
 
@@ -79,11 +83,11 @@ async def main():
         left_motor.run_until_stalled(-500, Stop.HOLD, 60),
         race=True,
     )
-    await left_motor.run_target(150, -20)
+    await left_motor.run_target(300, -20)
     # Back off, turn -180 toward forum
     await drive_base.straight(-120)
     await multitask(
-        drive_base.turn(-190),
+        bot.turn_at_rate(-190, turn_rate=300, turn_acceleration=450),
         right_motor.run_until_stalled(400, Stop.HOLD, 50),
     )
     # Drop the artifact in the forum
