@@ -29,7 +29,7 @@ async def main():
 
     async def move_after_release_flag():
         await wait(1000)
-        await bot.straight_at_speed(240, speed=300, acceleration=300)
+        await bot.straight_at_speed(250, speed=300, acceleration=300)
 
     # drop flag
     await multitask(
