@@ -8,19 +8,26 @@ bot = UnearthedBot()
 
 
 async def main():
-    await multitask(
-        bot.reset_base(),
-        bot.reset_right_motor(forward=False),
-        bot.reset_left_motor(),
-    )
     bot.init_setting()
+     
     drive_base = bot.drive_base
     right_motor = bot.right_motor
     left_motor = bot.left_motor
     voltage = bot.voltage()
 
-    # Move forward and turn toward statue mission.
-    await drive_base.straight(730)
+    async def reset_and_move():
+        await bot.reset_base()
+        await drive_base.straight(730)
+
+
+    await multitask(
+        # Move forward toward status.
+        reset_and_move(),
+        bot.reset_right_motor(forward=False),
+        bot.reset_left_motor(),
+    )
+
+    # Turn toward status
     target_angle = 45 if voltage < 8200 else 43
     await multitask(
         bot.steer_turn(
