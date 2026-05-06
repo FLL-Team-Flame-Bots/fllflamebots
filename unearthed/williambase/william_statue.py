@@ -28,7 +28,7 @@ async def main():
     )
 
     # Turn toward status
-    target_angle = 45 if voltage < 8200 else 43
+    target_angle = 45
     await multitask(
         bot.steer_turn(
             target_angle=target_angle,
