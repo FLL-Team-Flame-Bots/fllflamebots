@@ -12,27 +12,31 @@ bot = UnearthedBot()
 
 async def main():
     # Set up all devices.
-    await multitask(
-        bot.reset_left_motor(duty_limit=50),
-        bot.reset_right_motor(),
-        bot.reset_base(),
-    )
     bot.init_setting()
     drive_base = bot.drive_base
     left_motor = bot.left_motor
     right_motor = bot.right_motor
 
-    await drive_base.straight(690)
-    # await drive_base.turn(90)
+    async def reset_and_move():
+        await bot.reset_base()
+        await drive_base.straight(690)
+
+    await multitask(
+        reset_and_move(),
+        bot.reset_left_motor(duty_limit=50),
+        bot.reset_right_motor()
+    )
+
     await bot.steer_turn(target_angle=90, max_wheel_speed=200)
     await bot.straight_at_speed(120, speed=300, acceleration=200)
 
     async def two_step_raise_arm():
+        # Slowly lift right arm to drop flag, the fast lift to top
         await right_motor.run_angle(150, -80, then = Stop.NONE)
         await right_motor.run_target(300, -250)
 
     async def move_after_release_flag():
-        await wait(1000)
+        await wait(500)
         await bot.straight_at_speed(240, speed=300, acceleration=300)
 
     # drop flag
