@@ -47,7 +47,7 @@ async def main():
 
     # Face mission 4, back up a bit, drop right arm all the way down.
     await bot.steer_turn(target_angle=0, forward=False)
-    await drive_base.straight(-50)
+    await drive_base.straight(-60)
     await multitask(
         right_motor.run_until_stalled(-300, Stop.HOLD, 50), bot.compensate_backlash()
     )
@@ -56,7 +56,7 @@ async def main():
     drive_base.turn(0 - bot.heading())
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(50, speed=300, acceleration=200)
+    await bot.straight_at_speed(35, speed=300, acceleration=200)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
@@ -99,7 +99,7 @@ async def main():
     await left_motor.run_target(500, -200, then=Stop.NONE)
     await wait(100)
     await left_motor.run_target(500, 10)
-    await bot.steer_turn(77, forward=False, max_wheel_speed=300)
+    await bot.steer_turn(80, forward=False, max_wheel_speed=300)
     print(f"heading toward last flag {bot.heading()}")
     await bot.straight_at_speed(
         distance=600, speed=600, acceleration=600, then=Stop.HOLD
