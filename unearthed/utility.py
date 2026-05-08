@@ -8,12 +8,14 @@ heading_pid_settings = (7558, 0, 1889, 6, 11)
 
 
 def which_base(prime_hub: PrimeHub):
-    if prime_hub.system.info()["name"] == "Austin Pyhub2":
+    name = prime_hub.system.info()["name"]
+    print(f"Running on base {name}")
+    if name == "Austin Pyhub2":
         return 0
-    elif prime_hub.system.info()["name"] == "PyWilliamC":
+    elif name == "PyWilliamC":
         return 1
     else:
-        -1
+        return 0
 
 
 async def timeout(duration_ms: int, message: str):

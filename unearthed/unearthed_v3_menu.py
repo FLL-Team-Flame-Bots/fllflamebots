@@ -1,7 +1,9 @@
 from pybricks.hubs import PrimeHub
 from pybricks.tools import StopWatch, hub_menu
+from utility import which_base
 
 hub = PrimeHub()
+which_base(hub)
 
 
 def better_menu(*options):
