@@ -7,6 +7,15 @@ from pybricks.tools import multitask, wait
 heading_pid_settings = (7558, 0, 1889, 6, 11)
 
 
+def which_base(prime_hub: PrimeHub):
+    if prime_hub.system.info()["name"] == "Austin Pyhub2":
+        return 0
+    elif prime_hub.system.info()["name"] == "PyWilliamC":
+        return 1
+    else:
+        -1
+
+
 async def timeout(duration_ms: int, message: str):
     """
     Waits for a specified duration in milliseconds and then prints a message.
@@ -51,7 +60,11 @@ async def straight_at_speed(
 
 
 async def turn_at_rate(
-    drive_base: DriveBase, angle: int, turn_rate=-1, turn_acceleration=-1, then=Stop.HOLD
+    drive_base: DriveBase,
+    angle: int,
+    turn_rate=-1,
+    turn_acceleration=-1,
+    then=Stop.HOLD,
 ):
     """
     Moves the robot straight for a given distance at a specified speed and acceleration.

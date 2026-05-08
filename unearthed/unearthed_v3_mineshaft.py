@@ -1,13 +1,12 @@
 from pybricks.parameters import Stop
 from pybricks.tools import multitask, run_task, wait
 from unearthed_bot import UnearthedBot
-from utility import timeout
+from utility import timeout, which_base
 
 bot = UnearthedBot()
-
-# Range:
-# Right motor range (-480, 0)
-# Left motor range (-296, 0)
+base_id = which_base(bot.prime_hub)
+dist_backup_from_mine = [-50, -60]
+angle_toward_last_flag = [82, 80]
 
 
 async def main():
@@ -22,9 +21,7 @@ async def main():
         await drive_base.straight(690)
 
     await multitask(
-        reset_and_move(),
-        bot.reset_left_motor(duty_limit=50),
-        bot.reset_right_motor()
+        reset_and_move(), bot.reset_left_motor(duty_limit=50), bot.reset_right_motor()
     )
 
     await bot.steer_turn(target_angle=90, max_wheel_speed=200)
@@ -32,7 +29,7 @@ async def main():
 
     async def two_step_raise_arm():
         # Slowly lift right arm to drop flag, the fast lift to top
-        await right_motor.run_angle(150, -80, then = Stop.NONE)
+        await right_motor.run_angle(150, -80, then=Stop.NONE)
         await right_motor.run_target(300, -250)
 
     async def move_after_release_flag():
@@ -47,7 +44,7 @@ async def main():
 
     # Face mission 4, back up a bit, drop right arm all the way down.
     await bot.steer_turn(target_angle=0, forward=False)
-    await drive_base.straight(-50)
+    await drive_base.straight(dist_backup_from_mine[base_id])
     await multitask(
         right_motor.run_until_stalled(-300, Stop.HOLD, 50), bot.compensate_backlash()
     )
@@ -99,7 +96,9 @@ async def main():
     await left_motor.run_target(500, -200, then=Stop.NONE)
     await wait(100)
     await left_motor.run_target(500, 10)
-    await bot.steer_turn(82, forward=False, max_wheel_speed=300)
+    await bot.steer_turn(
+        angle_toward_last_flag[base_id], forward=False, max_wheel_speed=300
+    )
     print(f"heading toward last flag {bot.heading()}")
     await bot.straight_at_speed(
         distance=600, speed=600, acceleration=600, then=Stop.HOLD
