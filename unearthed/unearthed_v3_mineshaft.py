@@ -5,8 +5,8 @@ from utility import timeout, which_base
 
 bot = UnearthedBot()
 base_id = which_base(bot.prime_hub)
-dist_backup_from_mine = [-50, -60]
-angle_toward_last_flag = [82, 80]
+dist_backup_from_mine = [-50, -50]
+angle_toward_last_flag = [75, 75]
 
 
 async def main():
@@ -53,7 +53,7 @@ async def main():
     drive_base.turn(0 - bot.heading())
     # Move toward mission 4, raise right arm to lift mineshaft, then
     # move and continue lifting mineshaft.
-    await bot.straight_at_speed(35, speed=300, acceleration=200)
+    await bot.straight_at_speed(40, speed=300, acceleration=200)
     # await bot.turn_by_wheel(0)  # fine tune as move back&forth would veer off
     print(f"heading toward mission 4 {bot.heading()}")
 
@@ -97,14 +97,13 @@ async def main():
     await wait(100)
     await left_motor.run_target(500, 10)
     await bot.steer_turn(
-        angle_toward_last_flag[base_id], forward=False, max_wheel_speed=300
+        angle_toward_last_flag[base_id], forward=False
     )
     print(f"heading toward last flag {bot.heading()}")
     await bot.straight_at_speed(
-        distance=600, speed=600, acceleration=600, then=Stop.HOLD
+        distance=620, speed=600, acceleration=600, then=Stop.HOLD
     )
-    # # await drive_base.straight(530)
-    # print(f"heading delivered last flag {bot.heading()}")
+    print(f"heading delivered last flag {bot.heading()}")
     bot.stop()
 
 

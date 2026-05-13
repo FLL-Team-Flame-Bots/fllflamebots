@@ -251,12 +251,13 @@ async def steer_turn(
     low_wheel_speed = 5 * speed_factor
     heading = drive_base.angle()
     normalized_target = normalize_angle(target_angle - heading) + heading
+    print(f"steer turn toward {target_angle}")
     delta_heading = normalized_target - heading
 
     while not -angle_error <= delta_heading <= angle_error:
         # When orientation is close to target angle, reduce speed to avoid overshoot
         high_wheel_speed = (
-            max_wheel_speed if abs(delta_heading) > 5 else 20
+            max_wheel_speed if abs(delta_heading) > 5 else 30
         ) * speed_factor
         if (forward and delta_heading > 0) or (not forward and delta_heading < 0):
             left_wheel.run(high_wheel_speed)
@@ -265,11 +266,13 @@ async def steer_turn(
             right_wheel.run(high_wheel_speed)
             left_wheel.run(low_wheel_speed)
         await wait(10)
-        delta_heading = normalized_target - drive_base.angle()
-    left_wheel.hold()
+        heading = drive_base.angle()
+        delta_heading = normalized_target - heading
     right_wheel.hold()
+    left_wheel.hold()    
+    heading = drive_base.angle()
     await wait(100)  # wait for the robot to stabilize after turn
-    turn_to_target(drive_base, target_angle)
+    turn_to_target(drive_base, normalized_target)
     print(f"heading after steer turn {drive_base.angle()}")
 
 
