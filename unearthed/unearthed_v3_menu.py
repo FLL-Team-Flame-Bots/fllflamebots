@@ -25,6 +25,7 @@ def better_menu(*options):
 
 # Based on the selection, run a program.
 def main():
+    print(f"Battery {hub.battery.voltage()}")
     selected = better_menu(1, 2, 3, 4, 5, 6, 7)
     print(f"Selected {selected}")
     run_watch = StopWatch()
@@ -43,7 +44,6 @@ def main():
     elif selected == 7:
         import unearthed_v3_mineshaft
     print(f"{selected} stopped, time {run_watch.time()}(ms)")
-    print(f"Battery {hub.battery.voltage()}")
 
 
 main()
