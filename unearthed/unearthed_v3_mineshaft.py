@@ -5,7 +5,7 @@ from utility import timeout, which_base
 
 bot = UnearthedBot()
 base_id = which_base(bot.prime_hub)
-dist_backup_from_mine = [-50, -50]
+dist_backup_from_mine = [-50, -55]
 angle_toward_last_flag = [75, 75]
 
 
@@ -29,7 +29,7 @@ async def main():
 
     async def two_step_raise_arm():
         # Slowly lift right arm to drop flag, the fast lift to top
-        await right_motor.run_angle(150, -80, then=Stop.NONE)
+        await right_motor.run_angle(100, -80, then=Stop.NONE)
         await right_motor.run_target(300, -250)
 
     async def move_after_release_flag():
