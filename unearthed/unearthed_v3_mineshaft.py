@@ -6,7 +6,9 @@ from utility import timeout, which_base
 bot = UnearthedBot()
 base_id = which_base(bot.prime_hub)
 dist_backup_from_mine = [-50, -55]
-angle_toward_last_flag = [75, 75]
+dist_after_release_flag = [250, 250]
+dist_toward_mine = [140, 150]
+angle_toward_last_flag = [75, 73]
 
 
 async def main():
@@ -34,7 +36,8 @@ async def main():
 
     async def move_after_release_flag():
         await wait(500)
-        await bot.straight_at_speed(240, speed=300, acceleration=300)
+        await bot.straight_at_speed(
+            dist_after_release_flag[base_id], speed=300, acceleration=300)
 
     # drop flag
     await multitask(
@@ -69,7 +72,7 @@ async def main():
     await wait(100)
     await multitask(
         multitask(
-            bot.straight_at_speed(150, speed=200, acceleration=200),
+            bot.straight_at_speed(dist_toward_mine[base_id], speed=200, acceleration=200),
             timeout(2000, "straight to mineshaft timeout"),
             race=True,
         ),
